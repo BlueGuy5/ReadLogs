@@ -1,0 +1,14 @@
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\bin\Debug\Read_logs.exe.config
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\bin\Debug\Read_logs.exe
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\bin\Debug\Read_logs.pdb
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.csprojAssemblyReference.cache
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.Form1.resources
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.Properties.Resources.resources
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.csproj.GenerateResource.cache
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.csproj.CoreCompileInputs.cache
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.exe
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.pdb
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\bin\Debug\Read_logs.exe.manifest
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\bin\Debug\Read_logs.application
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.exe.manifest
+C:\Users\williamyu\source\repos\Read_logs\Read_logs\obj\Debug\Read_logs.application
