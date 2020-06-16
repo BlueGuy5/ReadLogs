@@ -38,26 +38,33 @@
             this.Panel_Tag = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.lbl_StreamReader = new System.Windows.Forms.Label();
+            this.Panel_ReadLogs = new System.Windows.Forms.Panel();
+            this.txt_Debugger = new System.Windows.Forms.TextBox();
+            this.btn_ClearDebugger = new System.Windows.Forms.Button();
+            this.txt_CPU = new System.Windows.Forms.TextBox();
+            this.txt_Ram = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txt_filesize = new System.Windows.Forms.TextBox();
+            this.Panel_ReadLogs.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txt_ReadLogs
             // 
-            this.txt_ReadLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_ReadLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txt_ReadLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_ReadLogs.Location = new System.Drawing.Point(12, 81);
+            this.txt_ReadLogs.Location = new System.Drawing.Point(0, 0);
             this.txt_ReadLogs.Multiline = true;
             this.txt_ReadLogs.Name = "txt_ReadLogs";
             this.txt_ReadLogs.ReadOnly = true;
             this.txt_ReadLogs.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txt_ReadLogs.Size = new System.Drawing.Size(776, 349);
+            this.txt_ReadLogs.Size = new System.Drawing.Size(852, 349);
             this.txt_ReadLogs.TabIndex = 0;
             // 
             // btn_Start
             // 
             this.btn_Start.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Start.Location = new System.Drawing.Point(630, 436);
+            this.btn_Start.Location = new System.Drawing.Point(706, 435);
             this.btn_Start.Name = "btn_Start";
             this.btn_Start.Size = new System.Drawing.Size(76, 31);
             this.btn_Start.TabIndex = 1;
@@ -72,7 +79,7 @@
             this.txt_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_search.Location = new System.Drawing.Point(12, 436);
             this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(612, 26);
+            this.txt_search.Size = new System.Drawing.Size(688, 26);
             this.txt_search.TabIndex = 2;
             // 
             // txt_Infile
@@ -82,13 +89,13 @@
             this.txt_Infile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txt_Infile.Location = new System.Drawing.Point(12, 12);
             this.txt_Infile.Name = "txt_Infile";
-            this.txt_Infile.Size = new System.Drawing.Size(694, 26);
+            this.txt_Infile.Size = new System.Drawing.Size(770, 26);
             this.txt_Infile.TabIndex = 3;
             // 
             // btn_stop
             // 
             this.btn_stop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_stop.Location = new System.Drawing.Point(712, 435);
+            this.btn_stop.Location = new System.Drawing.Point(788, 435);
             this.btn_stop.Name = "btn_stop";
             this.btn_stop.Size = new System.Drawing.Size(76, 31);
             this.btn_stop.TabIndex = 4;
@@ -99,7 +106,7 @@
             // btn_OpenFile
             // 
             this.btn_OpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_OpenFile.Location = new System.Drawing.Point(712, 7);
+            this.btn_OpenFile.Location = new System.Drawing.Point(788, 7);
             this.btn_OpenFile.Name = "btn_OpenFile";
             this.btn_OpenFile.Size = new System.Drawing.Size(76, 31);
             this.btn_OpenFile.TabIndex = 5;
@@ -113,7 +120,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_Tag.Location = new System.Drawing.Point(12, 44);
             this.Panel_Tag.Name = "Panel_Tag";
-            this.Panel_Tag.Size = new System.Drawing.Size(776, 31);
+            this.Panel_Tag.Size = new System.Drawing.Size(852, 31);
             this.Panel_Tag.TabIndex = 6;
             // 
             // label1
@@ -136,26 +143,106 @@
             this.lbl_StreamReader.TabIndex = 8;
             this.lbl_StreamReader.Text = "Pending";
             // 
+            // Panel_ReadLogs
+            // 
+            this.Panel_ReadLogs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_ReadLogs.Controls.Add(this.txt_ReadLogs);
+            this.Panel_ReadLogs.Location = new System.Drawing.Point(12, 81);
+            this.Panel_ReadLogs.Name = "Panel_ReadLogs";
+            this.Panel_ReadLogs.Size = new System.Drawing.Size(852, 349);
+            this.Panel_ReadLogs.TabIndex = 9;
+            // 
+            // txt_Debugger
+            // 
+            this.txt_Debugger.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_Debugger.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_Debugger.Location = new System.Drawing.Point(4, 33);
+            this.txt_Debugger.Multiline = true;
+            this.txt_Debugger.Name = "txt_Debugger";
+            this.txt_Debugger.ReadOnly = true;
+            this.txt_Debugger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txt_Debugger.Size = new System.Drawing.Size(224, 0);
+            this.txt_Debugger.TabIndex = 10;
+            // 
+            // btn_ClearDebugger
+            // 
+            this.btn_ClearDebugger.Location = new System.Drawing.Point(32, 3);
+            this.btn_ClearDebugger.Name = "btn_ClearDebugger";
+            this.btn_ClearDebugger.Size = new System.Drawing.Size(99, 24);
+            this.btn_ClearDebugger.TabIndex = 11;
+            this.btn_ClearDebugger.Text = "Clear Debugger";
+            this.btn_ClearDebugger.UseVisualStyleBackColor = true;
+            this.btn_ClearDebugger.Click += new System.EventHandler(this.btn_ClearDebugger_Click);
+            // 
+            // txt_CPU
+            // 
+            this.txt_CPU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txt_CPU.Location = new System.Drawing.Point(148, 465);
+            this.txt_CPU.Name = "txt_CPU";
+            this.txt_CPU.Size = new System.Drawing.Size(44, 20);
+            this.txt_CPU.TabIndex = 12;
+            // 
+            // txt_Ram
+            // 
+            this.txt_Ram.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txt_Ram.Location = new System.Drawing.Point(198, 465);
+            this.txt_Ram.Name = "txt_Ram";
+            this.txt_Ram.Size = new System.Drawing.Size(49, 20);
+            this.txt_Ram.TabIndex = 13;
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.btn_ClearDebugger);
+            this.panel1.Controls.Add(this.txt_Debugger);
+            this.panel1.Location = new System.Drawing.Point(469, 470);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(231, 15);
+            this.panel1.TabIndex = 14;
+            this.panel1.Visible = false;
+            // 
+            // txt_filesize
+            // 
+            this.txt_filesize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txt_filesize.Location = new System.Drawing.Point(253, 465);
+            this.txt_filesize.Name = "txt_filesize";
+            this.txt_filesize.Size = new System.Drawing.Size(49, 20);
+            this.txt_filesize.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AcceptButton = this.btn_Start;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 487);
+            this.ClientSize = new System.Drawing.Size(876, 487);
+            this.Controls.Add(this.txt_filesize);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.btn_OpenFile);
+            this.Controls.Add(this.txt_Ram);
+            this.Controls.Add(this.btn_stop);
+            this.Controls.Add(this.txt_CPU);
+            this.Controls.Add(this.btn_Start);
+            this.Controls.Add(this.Panel_ReadLogs);
             this.Controls.Add(this.lbl_StreamReader);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Panel_Tag);
-            this.Controls.Add(this.btn_OpenFile);
-            this.Controls.Add(this.btn_stop);
             this.Controls.Add(this.txt_Infile);
             this.Controls.Add(this.txt_search);
-            this.Controls.Add(this.btn_Start);
-            this.Controls.Add(this.txt_ReadLogs);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Better than Cygwin";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Panel_ReadLogs.ResumeLayout(false);
+            this.Panel_ReadLogs.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -172,6 +259,13 @@
         private System.Windows.Forms.Panel Panel_Tag;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lbl_StreamReader;
+        private System.Windows.Forms.Panel Panel_ReadLogs;
+        private System.Windows.Forms.TextBox txt_Debugger;
+        private System.Windows.Forms.Button btn_ClearDebugger;
+        private System.Windows.Forms.TextBox txt_CPU;
+        private System.Windows.Forms.TextBox txt_Ram;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox txt_filesize;
     }
 }
 
