@@ -33,7 +33,6 @@
             this.btn_Start = new System.Windows.Forms.Button();
             this.txt_search = new System.Windows.Forms.TextBox();
             this.txt_Infile = new System.Windows.Forms.TextBox();
-            this.btn_stop = new System.Windows.Forms.Button();
             this.btn_OpenFile = new System.Windows.Forms.Button();
             this.Panel_Tag = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -45,80 +44,83 @@
             this.txt_Ram = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txt_filesize = new System.Windows.Forms.TextBox();
+            this.txt_wait = new System.Windows.Forms.TextBox();
             this.Panel_ReadLogs.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txt_ReadLogs
             // 
+            this.txt_ReadLogs.BackColor = System.Drawing.Color.Black;
             this.txt_ReadLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txt_ReadLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_ReadLogs.ForeColor = System.Drawing.Color.GhostWhite;
             this.txt_ReadLogs.Location = new System.Drawing.Point(0, 0);
             this.txt_ReadLogs.Multiline = true;
             this.txt_ReadLogs.Name = "txt_ReadLogs";
             this.txt_ReadLogs.ReadOnly = true;
             this.txt_ReadLogs.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txt_ReadLogs.Size = new System.Drawing.Size(852, 349);
+            this.txt_ReadLogs.Size = new System.Drawing.Size(852, 381);
             this.txt_ReadLogs.TabIndex = 0;
             // 
             // btn_Start
             // 
             this.btn_Start.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_Start.Location = new System.Drawing.Point(706, 435);
+            this.btn_Start.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_Start.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Start.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_Start.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btn_Start.Location = new System.Drawing.Point(407, 434);
             this.btn_Start.Name = "btn_Start";
             this.btn_Start.Size = new System.Drawing.Size(76, 31);
             this.btn_Start.TabIndex = 1;
-            this.btn_Start.Text = "Start";
-            this.btn_Start.UseVisualStyleBackColor = true;
+            this.btn_Start.Text = "Run";
+            this.btn_Start.UseVisualStyleBackColor = false;
             this.btn_Start.Click += new System.EventHandler(this.btn_Start_ClickAsync);
             // 
             // txt_search
             // 
             this.txt_search.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_search.BackColor = System.Drawing.Color.AliceBlue;
             this.txt_search.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_search.ForeColor = System.Drawing.Color.DarkBlue;
             this.txt_search.Location = new System.Drawing.Point(12, 436);
             this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(688, 26);
+            this.txt_search.Size = new System.Drawing.Size(389, 26);
             this.txt_search.TabIndex = 2;
             // 
             // txt_Infile
             // 
-            this.txt_Infile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_Infile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_Infile.BackColor = System.Drawing.Color.AliceBlue;
             this.txt_Infile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_Infile.Location = new System.Drawing.Point(12, 12);
+            this.txt_Infile.ForeColor = System.Drawing.Color.DarkBlue;
+            this.txt_Infile.Location = new System.Drawing.Point(489, 435);
             this.txt_Infile.Name = "txt_Infile";
-            this.txt_Infile.Size = new System.Drawing.Size(770, 26);
+            this.txt_Infile.Size = new System.Drawing.Size(290, 26);
             this.txt_Infile.TabIndex = 3;
-            // 
-            // btn_stop
-            // 
-            this.btn_stop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_stop.Location = new System.Drawing.Point(788, 435);
-            this.btn_stop.Name = "btn_stop";
-            this.btn_stop.Size = new System.Drawing.Size(76, 31);
-            this.btn_stop.TabIndex = 4;
-            this.btn_stop.Text = "Stop";
-            this.btn_stop.UseVisualStyleBackColor = true;
-            this.btn_stop.Click += new System.EventHandler(this.btn_stop_Click);
             // 
             // btn_OpenFile
             // 
-            this.btn_OpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_OpenFile.Location = new System.Drawing.Point(788, 7);
+            this.btn_OpenFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_OpenFile.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_OpenFile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_OpenFile.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_OpenFile.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btn_OpenFile.Location = new System.Drawing.Point(788, 434);
             this.btn_OpenFile.Name = "btn_OpenFile";
             this.btn_OpenFile.Size = new System.Drawing.Size(76, 31);
             this.btn_OpenFile.TabIndex = 5;
             this.btn_OpenFile.Text = "Open File";
-            this.btn_OpenFile.UseVisualStyleBackColor = true;
+            this.btn_OpenFile.UseVisualStyleBackColor = false;
             this.btn_OpenFile.Click += new System.EventHandler(this.btn_OpenFile_Click);
             // 
             // Panel_Tag
             // 
             this.Panel_Tag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Panel_Tag.Location = new System.Drawing.Point(12, 44);
+            this.Panel_Tag.Location = new System.Drawing.Point(12, 12);
             this.Panel_Tag.Name = "Panel_Tag";
             this.Panel_Tag.Size = new System.Drawing.Size(852, 31);
             this.Panel_Tag.TabIndex = 6;
@@ -149,9 +151,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Panel_ReadLogs.Controls.Add(this.txt_ReadLogs);
-            this.Panel_ReadLogs.Location = new System.Drawing.Point(12, 81);
+            this.Panel_ReadLogs.Location = new System.Drawing.Point(12, 49);
             this.Panel_ReadLogs.Name = "Panel_ReadLogs";
-            this.Panel_ReadLogs.Size = new System.Drawing.Size(852, 349);
+            this.Panel_ReadLogs.Size = new System.Drawing.Size(852, 381);
             this.Panel_ReadLogs.TabIndex = 9;
             // 
             // txt_Debugger
@@ -183,6 +185,7 @@
             this.txt_CPU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txt_CPU.Location = new System.Drawing.Point(148, 465);
             this.txt_CPU.Name = "txt_CPU";
+            this.txt_CPU.ReadOnly = true;
             this.txt_CPU.Size = new System.Drawing.Size(44, 20);
             this.txt_CPU.TabIndex = 12;
             // 
@@ -191,6 +194,7 @@
             this.txt_Ram.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txt_Ram.Location = new System.Drawing.Point(198, 465);
             this.txt_Ram.Name = "txt_Ram";
+            this.txt_Ram.ReadOnly = true;
             this.txt_Ram.Size = new System.Drawing.Size(49, 20);
             this.txt_Ram.TabIndex = 13;
             // 
@@ -212,20 +216,31 @@
             this.txt_filesize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txt_filesize.Location = new System.Drawing.Point(253, 465);
             this.txt_filesize.Name = "txt_filesize";
+            this.txt_filesize.ReadOnly = true;
             this.txt_filesize.Size = new System.Drawing.Size(49, 20);
             this.txt_filesize.TabIndex = 15;
+            // 
+            // txt_wait
+            // 
+            this.txt_wait.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txt_wait.Location = new System.Drawing.Point(308, 465);
+            this.txt_wait.Name = "txt_wait";
+            this.txt_wait.Size = new System.Drawing.Size(26, 20);
+            this.txt_wait.TabIndex = 16;
+            this.txt_wait.Text = "1";
             // 
             // Form1
             // 
             this.AcceptButton = this.btn_Start;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(876, 487);
+            this.Controls.Add(this.txt_wait);
             this.Controls.Add(this.txt_filesize);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btn_OpenFile);
             this.Controls.Add(this.txt_Ram);
-            this.Controls.Add(this.btn_stop);
             this.Controls.Add(this.txt_CPU);
             this.Controls.Add(this.btn_Start);
             this.Controls.Add(this.Panel_ReadLogs);
@@ -234,6 +249,7 @@
             this.Controls.Add(this.Panel_Tag);
             this.Controls.Add(this.txt_Infile);
             this.Controls.Add(this.txt_search);
+            this.ForeColor = System.Drawing.Color.GhostWhite;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -254,7 +270,6 @@
         private System.Windows.Forms.Button btn_Start;
         private System.Windows.Forms.TextBox txt_search;
         private System.Windows.Forms.TextBox txt_Infile;
-        private System.Windows.Forms.Button btn_stop;
         private System.Windows.Forms.Button btn_OpenFile;
         private System.Windows.Forms.Panel Panel_Tag;
         private System.Windows.Forms.Label label1;
@@ -266,6 +281,7 @@
         private System.Windows.Forms.TextBox txt_Ram;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox txt_filesize;
+        private System.Windows.Forms.TextBox txt_wait;
     }
 }
 
