@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTC;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,7 @@ namespace Read_logs
         public Form1()
         {
             InitializeComponent();
+            KeyDown += new KeyEventHandler(F1KeyPress);
             this.FormClosing += new FormClosingEventHandler(CloseApp);
         }
 
@@ -28,7 +30,7 @@ namespace Read_logs
             //txt_ReadLogs.BackColor = Color.White;
             //btn_stop.Enabled = false;
             //txt_search.Text = "(dsp_earcon) Attempting to start a new download of version,reconnect attempt";
-            txt_Infile.Text = @"C:\Users\williamyu\Desktop\Frames_Logs\";
+            //txt_Infile.Text = @"C:\Users\williamyu\Desktop\Frames_Logs\";
             await Get_CPU_Usage();
             Get_Ram_Usage();
         }
@@ -77,8 +79,6 @@ namespace Read_logs
         TextBox txt_multilogs;
         private void CreateTags(string searchText)
         {
-
-
             Button btn_close_keyword = new Button();
             btn_close_keyword.Name = searchText;
             btn_close_keyword.Text = "X";
@@ -154,44 +154,45 @@ namespace Read_logs
 
             using (FileStream stream = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(stream))
-                while (loopthis == true)
+            while (loopthis == true)
+            {
+                Thread.Sleep(int.Parse(txt_wait.Text));
+                while ((line = await reader.ReadLineAsync()) != null)
                 {
-                    Thread.Sleep(int.Parse(txt_wait.Text));
-                    while ((line = await reader.ReadLineAsync()) != null)
+                    foreach (TextBox TB in Panel_ReadLogs.Controls)
                     {
-                        foreach (TextBox TB in Panel_ReadLogs.Controls)
+                        foreach (string keyword in splitText)
                         {
-                            foreach (string keyword in splitText)
+                            if (TB.Name == keyword)
                             {
-                                if (TB.Name == keyword)
+                                if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
                                 {
-                                    if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                    {
-                                        txt_ReadLogs.AppendText(line + "\r\n");
-                                        txt_Debugger.AppendText("\r\n" + "Writing....");
-                                        txt_Debugger.AppendText("\r\n" + "TB Name: " + TB.Name);
-                                        txt_Debugger.AppendText("\r\n" + "ReadToEndAsync");
-                                        TB.AppendText(line + "\r\n");
-                                    }
-                                    lbl_StreamReader.Text = "Open";
-                                    if (lbl_StreamReader.Text == "Open")
-                                    {
-                                        lbl_StreamReader.ForeColor = Color.Green;
-                                    }
+                                    txt_ReadLogs.AppendText(line + "\r\n");
+                                    txt_Debugger.AppendText("\r\n" + "Writing....");
+                                    txt_Debugger.AppendText("\r\n" + "TB Name: " + TB.Name);
+                                    txt_Debugger.AppendText("\r\n" + "ReadToEndAsync");
+                                    TB.AppendText(line + "\r\n");
+                                }
+                                lbl_StreamReader.Text = "Open";
+                                if (lbl_StreamReader.Text == "Open")
+                                {
+                                    lbl_StreamReader.ForeColor = Color.Green;
                                 }
                             }
                         }
                     }
-                    await Get_CPU_Usage();
-                    Get_FileSize();
-                    Get_Ram_Usage();
-                    Thread.Sleep(int.Parse(txt_wait.Text));
+                    if(btn_Start.Text != "Stop")
+                    {
+                        lbl_StreamReader.Text = "Close";
+                        lbl_StreamReader.ForeColor = Color.Red;
+                        break;
+                    }
                 }
-            //lbl_StreamReader.Text = "Close";
-            //if (lbl_StreamReader.Text == "Close")
-            //{
-            //    lbl_StreamReader.ForeColor = Color.Red;
-            //}
+                await Get_CPU_Usage();
+                Get_FileSize();
+                Get_Ram_Usage();
+                Thread.Sleep(int.Parse(txt_wait.Text));
+            }
         }
 
         private async Task Blank_Log_Output()
@@ -218,21 +219,22 @@ namespace Read_logs
                         txt_ReadLogs.AppendText(line + "\r\n");
                     }
                     lbl_StreamReader.Text = "Open";
-                        if(lbl_StreamReader.Text == "Open")
-                        {
-                            lbl_StreamReader.ForeColor = Color.Green;
-                        }
+                    if(lbl_StreamReader.Text == "Open")
+                    {
+                        lbl_StreamReader.ForeColor = Color.Green;
+                    }
+                    if (btn_Start.Text != "Stop")
+                    {
+                        lbl_StreamReader.Text = "Close";
+                        lbl_StreamReader.ForeColor = Color.Red;
+                        break;
+                    }
                 }
                 await Get_CPU_Usage();
                 Get_FileSize();
                 Get_Ram_Usage();
                 Thread.Sleep(int.Parse(txt_wait.Text));
             }
-            //lbl_StreamReader.Text = "Close";
-            //if (lbl_StreamReader.Text == "Close")
-           // {
-           //     lbl_StreamReader.ForeColor = Color.Red;
-           // }
         }
         private void btn_close_keyword_Click(object sender, EventArgs e)
         {
@@ -325,6 +327,8 @@ namespace Read_logs
         {
             if (btn_Start.Text == "Run")
             {
+                txt_Infile.Enabled = false;
+                btn_Browse.Enabled = false;
                 Get_FileSize();
                 if (tmpfile != txt_Infile.Text)
                 {
@@ -405,6 +409,8 @@ namespace Read_logs
             {
                 loopthis = false;
                 btn_Start.Text = "Run";
+                txt_Infile.Enabled = true;
+                btn_Browse.Enabled = true;
             }
         }
 
@@ -419,13 +425,28 @@ namespace Read_logs
                 MessageBox.Show(ex.Message, "btn_OpenFile_Click", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        private void F1KeyPress(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.F1)
+            {
+                KW_Ref KWref = new KW_Ref();
+                KWref.Show();
+            }
+        }
+        private void btn_Browse_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.InitialDirectory = Environment.SpecialFolder.DesktopDirectory.ToString();
+            dlg.ShowDialog();
+            txt_Infile.Text = dlg.FileName;
+        }
         private void btn_ClearDebugger_Click(object sender, EventArgs e)
         {
             txt_Debugger.Text = "";
         }
         private void CloseApp(object sender, FormClosingEventArgs e)
         {
+            this.Dispose();
             Application.Exit();
         }
     }     
