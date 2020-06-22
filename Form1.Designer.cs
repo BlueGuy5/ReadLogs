@@ -38,17 +38,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.lbl_StreamReader = new System.Windows.Forms.Label();
             this.Panel_ReadLogs = new System.Windows.Forms.Panel();
-            this.txt_Debugger = new System.Windows.Forms.TextBox();
-            this.btn_ClearDebugger = new System.Windows.Forms.Button();
             this.txt_CPU = new System.Windows.Forms.TextBox();
             this.txt_Ram = new System.Windows.Forms.TextBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.txt_filesize = new System.Windows.Forms.TextBox();
             this.txt_wait = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btn_Browse = new System.Windows.Forms.Button();
             this.Panel_ReadLogs.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -160,30 +156,6 @@
             this.Panel_ReadLogs.Size = new System.Drawing.Size(852, 356);
             this.Panel_ReadLogs.TabIndex = 9;
             // 
-            // txt_Debugger
-            // 
-            this.txt_Debugger.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_Debugger.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_Debugger.Location = new System.Drawing.Point(4, 33);
-            this.txt_Debugger.Multiline = true;
-            this.txt_Debugger.Name = "txt_Debugger";
-            this.txt_Debugger.ReadOnly = true;
-            this.txt_Debugger.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txt_Debugger.Size = new System.Drawing.Size(224, 0);
-            this.txt_Debugger.TabIndex = 10;
-            // 
-            // btn_ClearDebugger
-            // 
-            this.btn_ClearDebugger.Location = new System.Drawing.Point(32, 3);
-            this.btn_ClearDebugger.Name = "btn_ClearDebugger";
-            this.btn_ClearDebugger.Size = new System.Drawing.Size(99, 24);
-            this.btn_ClearDebugger.TabIndex = 11;
-            this.btn_ClearDebugger.Text = "Clear Debugger";
-            this.btn_ClearDebugger.UseVisualStyleBackColor = true;
-            this.btn_ClearDebugger.Click += new System.EventHandler(this.btn_ClearDebugger_Click);
-            // 
             // txt_CPU
             // 
             this.txt_CPU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -201,19 +173,6 @@
             this.txt_Ram.ReadOnly = true;
             this.txt_Ram.Size = new System.Drawing.Size(49, 20);
             this.txt_Ram.TabIndex = 13;
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.btn_ClearDebugger);
-            this.panel1.Controls.Add(this.txt_Debugger);
-            this.panel1.Location = new System.Drawing.Point(432, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(231, 0);
-            this.panel1.TabIndex = 14;
-            this.panel1.Visible = false;
             // 
             // txt_filesize
             // 
@@ -236,7 +195,6 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.panel1);
             this.panel2.Controls.Add(this.txt_wait);
             this.panel2.Controls.Add(this.lbl_StreamReader);
             this.panel2.Controls.Add(this.txt_filesize);
@@ -287,8 +245,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Panel_ReadLogs.ResumeLayout(false);
             this.Panel_ReadLogs.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -306,11 +262,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lbl_StreamReader;
         private System.Windows.Forms.Panel Panel_ReadLogs;
-        private System.Windows.Forms.TextBox txt_Debugger;
-        private System.Windows.Forms.Button btn_ClearDebugger;
         private System.Windows.Forms.TextBox txt_CPU;
         private System.Windows.Forms.TextBox txt_Ram;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox txt_filesize;
         private System.Windows.Forms.TextBox txt_wait;
         public System.Windows.Forms.TextBox txt_search;
