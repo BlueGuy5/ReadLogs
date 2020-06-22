@@ -183,8 +183,23 @@ namespace Read_logs
                                     {
                                         txt_ReadLogs.AppendText(line + "\r\n");
                                         TB.AppendText(line + "\r\n");
-
                                     }
+                                    if (check_keywords == true)
+                                    {
+                                        foreach (KeyValuePair<string, string> kvp in Dict_Sub_keywords())
+                                        {
+
+                                            if (keyword.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                            {
+                                                if (line.IndexOf(kvp.Value, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                                {
+                                                    txt_ReadLogs.AppendText(line + "\r\n");
+                                                    TB.AppendText(line + "\r\n");
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
                                     /*
                                     foreach (KeyValuePair<string, string> kvp in Dict_Sub_keywords())
                                     {
@@ -205,26 +220,13 @@ namespace Read_logs
                                         }
                                     }
                                     */
+
                                 }
                                 //if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
                                 //{
 
                                 //}                                     
-                                if (check_keywords == true)
-                                {
-                                    foreach (KeyValuePair<string, string> kvp in Dict_Sub_keywords())
-                                    {
 
-                                        if (keyword.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                        {
-                                            if (line.IndexOf(kvp.Value, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                            {
-                                                txt_ReadLogs.AppendText(line + "\r\n");
-                                                TB.AppendText(line + "\r\n");
-                                            }
-                                        }
-                                    }
-                                }
                             }
 
                         }
