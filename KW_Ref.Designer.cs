@@ -47,9 +47,16 @@
             this.button11 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
+            this.Panel_Shipmode = new System.Windows.Forms.Panel();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
             this.Panel_OTA.SuspendLayout();
             this.Panel_Phone.SuspendLayout();
             this.Panel_OOR.SuspendLayout();
+            this.Panel_Shipmode.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_OTA
@@ -83,7 +90,7 @@
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(144, 39);
             this.button6.TabIndex = 7;
-            this.button6.Text = "Addon FW";
+            this.button6.Text = "edsp fw_version";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.btn_click);
             // 
@@ -93,7 +100,7 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(144, 39);
             this.button5.TabIndex = 6;
-            this.button5.Text = "Connected";
+            this.button5.Text = "bt dump profile_status";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.btn_click);
             // 
@@ -238,11 +245,74 @@
             this.button15.UseVisualStyleBackColor = true;
             this.button15.Click += new System.EventHandler(this.btn_click);
             // 
+            // Panel_Shipmode
+            // 
+            this.Panel_Shipmode.Controls.Add(this.button19);
+            this.Panel_Shipmode.Controls.Add(this.button12);
+            this.Panel_Shipmode.Controls.Add(this.button16);
+            this.Panel_Shipmode.Controls.Add(this.button17);
+            this.Panel_Shipmode.Controls.Add(this.button18);
+            this.Panel_Shipmode.Location = new System.Drawing.Point(357, 156);
+            this.Panel_Shipmode.Name = "Panel_Shipmode";
+            this.Panel_Shipmode.Size = new System.Drawing.Size(152, 223);
+            this.Panel_Shipmode.TabIndex = 3;
+            // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(3, 3);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(144, 34);
+            this.button12.TabIndex = 3;
+            this.button12.Text = "Shipmode";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.btn_title_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(3, 133);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(144, 39);
+            this.button16.TabIndex = 5;
+            this.button16.Text = "dtest shipmode";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.btn_click);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(3, 88);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(144, 39);
+            this.button17.TabIndex = 4;
+            this.button17.Text = "bt unpair_all";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.btn_click);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(3, 43);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(144, 39);
+            this.button18.TabIndex = 1;
+            this.button18.Text = "dtest battery_capacity";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.btn_click);
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(5, 178);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(144, 39);
+            this.button19.TabIndex = 6;
+            this.button19.Text = "zapp runtime";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.btn_click);
+            // 
             // KW_Ref
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(521, 401);
+            this.Controls.Add(this.Panel_Shipmode);
             this.Controls.Add(this.Panel_OOR);
             this.Controls.Add(this.Panel_Phone);
             this.Controls.Add(this.Panel_OTA);
@@ -256,6 +326,7 @@
             this.Panel_OTA.ResumeLayout(false);
             this.Panel_Phone.ResumeLayout(false);
             this.Panel_OOR.ResumeLayout(false);
+            this.Panel_Shipmode.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -280,5 +351,11 @@
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button14;
         private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Panel Panel_Shipmode;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button19;
     }
 }

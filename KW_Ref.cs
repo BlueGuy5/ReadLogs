@@ -61,6 +61,11 @@ namespace BTC
                         Panel_Case_Statements(Panel_OOR, getbtn.Text);
                         break;
                     }
+                case "Panel_Shipmode":
+                    {
+                        Panel_Case_Statements(Panel_Shipmode, getbtn.Text);
+                        break;
+                    }
             }
             //MessageBox.Show(test.ToString(), "dfsd");
         }
