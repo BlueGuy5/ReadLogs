@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -126,25 +127,27 @@ namespace Read_logs
             txt_multilogs.ForeColor = Color.GhostWhite;
             Panel_ReadLogs.Controls.Add(txt_multilogs);
         }
-        private Dictionary<string,string> Dict_Sub_keywords()
+        private List<string> List_Sub_Keywords()
         {
-            var keywords = new Dictionary<string, string>();
-            keywords.Add("bt dump profile_status", "Connected");
-            keywords.Add("edsp fw_version", "DSP Addon FW version");
+            var keywords = new List<string>();
+            keywords.Add("bt dump profile_status");
+            keywords.Add("edsp fw_version");
             //Useful shipmode commands
-            keywords.Add("dtest battery_capacity", "Capacity");
-            keywords.Add("bt unpair_all", "Bt_CB_MSG_PROFILE_DISCONNECTED");
-            keywords.Add("dtest shipmode", "Set power mode");
-            keywords.Add("zapp runtime", "Charging Mode");
+            keywords.Add("dtest battery_capacity");
+            keywords.Add("bt unpair_all");
+            keywords.Add("dtest shipmode");
+            keywords.Add("zapp runtime");
             return keywords;
         }
         private async Task Log_Output()
         {
             string line;
+            string kw_line;
             tmpfile = txt_Infile.Text;
             string[] splitText;
             loopthis = true;
             bool check_keywords = false;
+            long retReaderLinePOS;
 
             splitText = txt_search.Text.Split(',');
             if (btn_press == false)
@@ -154,18 +157,20 @@ namespace Read_logs
                 foreach (string searchText in splitText)
                 {
                     CreateTags(searchText);
-                    foreach (KeyValuePair<string, string> kvp in Dict_Sub_keywords())
+                }
+            }
+            foreach (string searchText in splitText)
+            {
+                foreach (string kw in List_Sub_Keywords())
+                {
+                    if (searchText.IndexOf(kw, StringComparison.InvariantCultureIgnoreCase) >= 0)
                     {
-                        if (searchText.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                        {
-                            check_keywords = true;
-                            break;
-                        }
+                        check_keywords = true;
+                        break;
                     }
                 }
             }
             txt_search.Text = "";
-
             using (FileStream stream = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(stream))
                 while (loopthis == true)
@@ -184,71 +189,75 @@ namespace Read_logs
                                         txt_ReadLogs.AppendText(line + "\r\n");
                                         TB.AppendText(line + "\r\n");
                                     }
-                                    if (check_keywords == true)
-                                    {
-                                        foreach (KeyValuePair<string, string> kvp in Dict_Sub_keywords())
-                                        {
-
-                                            if (keyword.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                            {
-                                                if (line.IndexOf(kvp.Value, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                                {
-                                                    txt_ReadLogs.AppendText(line + "\r\n");
-                                                    TB.AppendText(line + "\r\n");
-                                                }
-                                            }
-                                        }
-                                    }
-                                    
-                                    /*
-                                    foreach (KeyValuePair<string, string> kvp in Dict_Sub_keywords())
-                                    {
-                                        if (keyword.IndexOf(kvp.Key, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                        {
-                                            var test = GetActualPosition(reader);
-                                            stream.Seek(test, SeekOrigin.Begin);
-                                            line = await reader.ReadLineAsync();
-                                            txt_ReadLogs.AppendText(line + "\r\n");
-                                            TB.AppendText(line + "\r\n");
-                                            if (line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                            {
-                                                stream.Seek(test, SeekOrigin.End);
-                                                //line = await reader.ReadLineAsync();
-                                                txt_ReadLogs.AppendText(line + "\r\n");
-                                                TB.AppendText(line + "\r\n");
-                                            }
-                                        }
-                                    }
-                                    */
-
                                 }
-                                //if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                //{
-
-                                //}                                     
-
                             }
-
+                        }
+                        //Should only run this block of code if we are searching commands!
+                        if (check_keywords == true)
+                        {
+                            kw_line = line;
+                            foreach (TextBox TB in Panel_ReadLogs.Controls)
+                            {
+                                foreach (string kw_keyword in List_Sub_Keywords())
+                                {
+                                    if (TB.Name == kw_keyword)
+                                    {
+                                        if (kw_line.IndexOf(kw_keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                        {
+                                            retReaderLinePOS = GetActualPosition(reader);
+                                            FileStream stream2 = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                                            StreamReader reader2 = new StreamReader(stream2); 
+                                            while ((kw_line = await reader.ReadLineAsync()) != null)
+                                            {                                                                    
+                                                reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
+                                                txt_ReadLogs.AppendText(kw_line + "\r\n");
+                                                TB.AppendText(kw_line + "\r\n");
+                                                if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                                {
+                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
+                                                    txt_ReadLogs.AppendText("****************" + "\r\n");
+                                                    TB.AppendText("****************" + "\r\n");
+                                                    reader2.Close();
+                                                    break;
+                                                }
+                                                #region Stop
+                                                if (loopthis == false)
+                                                {
+                                                    lbl_StreamReader.Text = "Close";
+                                                    lbl_StreamReader.ForeColor = Color.Red;
+                                                    break;
+                                                }
+                                                #endregion
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (line != null)
+                        {
+                            lbl_StreamReader.Text = "reading";
+                            lbl_StreamReader.ForeColor = Color.Blue;
                         }
                     }
-                    lbl_StreamReader.Text = "Open";
-                    if (lbl_StreamReader.Text == "Open")
+                    await Get_CPU_Usage();
+                    Get_FileSize();
+                    Get_Ram_Usage();
+                    Thread.Sleep(int.Parse(txt_wait.Text));
+
+                    if (line == null)
                     {
+                        lbl_StreamReader.Text = "pending";
                         lbl_StreamReader.ForeColor = Color.Green;
                     }
-                    if (btn_Start.Text != "Stop")
-                    {
-                        lbl_StreamReader.Text = "Close";
-                        lbl_StreamReader.ForeColor = Color.Red;
-                        break;
-                    }
                 }
-            await Get_CPU_Usage();
-            Get_FileSize();
-            Get_Ram_Usage();
-            Thread.Sleep(int.Parse(txt_wait.Text));     
+            if (loopthis == false)
+            {
+                lbl_StreamReader.Text = "Close";
+                lbl_StreamReader.ForeColor = Color.Red;
+            }                  
         }
-    
+
         private async Task Blank_Log_Output()
         {
             string line;
@@ -273,7 +282,7 @@ namespace Read_logs
                         txt_ReadLogs.AppendText(line + "\r\n");
                     }
                     lbl_StreamReader.Text = "Open";
-                    if(lbl_StreamReader.Text == "Open")
+                    if (lbl_StreamReader.Text == "Open")
                     {
                         lbl_StreamReader.ForeColor = Color.Green;
                     }
@@ -283,12 +292,28 @@ namespace Read_logs
                         lbl_StreamReader.ForeColor = Color.Red;
                         break;
                     }
+                    if (line != null)
+                    {
+                        lbl_StreamReader.Text = "reading";
+                        lbl_StreamReader.ForeColor = Color.Blue;
+                    }
                 }
                 await Get_CPU_Usage();
                 Get_FileSize();
                 Get_Ram_Usage();
                 Thread.Sleep(int.Parse(txt_wait.Text));
+
+                if (line == null)
+                {
+                    lbl_StreamReader.Text = "pending";
+                    lbl_StreamReader.ForeColor = Color.Green;
+                }
             }
+            if (loopthis == false)
+            {
+                lbl_StreamReader.Text = "Close";
+                lbl_StreamReader.ForeColor = Color.Red;
+            }            
         }
         private void btn_close_keyword_Click(object sender, EventArgs e)
         {
@@ -453,7 +478,7 @@ namespace Read_logs
                     MessageBox.Show(ex.Message, "btn_Start_ClickAsync", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            else if(btn_Start.Text == "Stop")
+            else
             {
                 loopthis = false;
                 btn_Start.Text = "Run";
@@ -485,8 +510,11 @@ namespace Read_logs
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.InitialDirectory = Environment.SpecialFolder.DesktopDirectory.ToString();
-            dlg.ShowDialog();
-            txt_Infile.Text = dlg.FileName;
+            var dlgOK = dlg.ShowDialog();
+            if (dlgOK == DialogResult.OK)
+            {
+                txt_Infile.Text = dlg.FileName;
+            }
         }
         private void CloseApp(object sender, FormClosingEventArgs e)
         {
