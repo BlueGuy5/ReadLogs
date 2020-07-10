@@ -106,7 +106,7 @@ namespace Read_logs
             Panel_Keywords.Width = btn_close_keyword.Width + btn_SearchText.Width;
             Panel_Keywords.Height = Panel_Tag.Height;
             Panel_Keywords.BackColor = Color.AliceBlue;
-            Panel_Keywords.Left = Panel_Keywords.Width * (Panel_Tag.Controls.Count);
+            Panel_Keywords.Left = Panel_Main.Width + Panel_Keywords.Width * (Panel_Tag.Controls.Count - 1);
 
             Panel_Keywords.Controls.Add(btn_close_keyword);
             Panel_Keywords.Controls.Add(btn_SearchText);
@@ -137,6 +137,8 @@ namespace Read_logs
             keywords.Add("bt unpair_all");
             keywords.Add("dtest shipmode");
             keywords.Add("zapp runtime");
+            //Errors
+            keywords.Add("Zebra Hard Fault Error");
             return keywords;
         }
         private async Task Log_Output()
@@ -152,7 +154,14 @@ namespace Read_logs
             splitText = txt_search.Text.Split(',');
             if (btn_press == false)
             {
-                Panel_Tag.Controls.Clear();
+                //Panel_Tag.Controls.Clear();
+                foreach(Panel _Panel in Panel_Tag.Controls)
+                {
+                    if (_Panel.Name != "Panel_Main")
+                    {
+                        Panel_Tag.Controls.Remove(_Panel);
+                    }
+                }
                 RemoveReadLogsControls();
                 foreach (string searchText in splitText)
                 {
@@ -161,6 +170,7 @@ namespace Read_logs
             }
             foreach (string searchText in splitText)
             {
+                
                 foreach (string kw in List_Sub_Keywords())
                 {
                     if (searchText.IndexOf(kw, StringComparison.InvariantCultureIgnoreCase) >= 0)
@@ -169,6 +179,14 @@ namespace Read_logs
                         break;
                     }
                 }
+                
+                /*
+                if (searchText.Substring(0,1) == "$")
+                {
+                    check_keywords = true;
+                    break;
+                }
+                */
             }
             txt_search.Text = "";
             using (FileStream stream = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -208,17 +226,25 @@ namespace Read_logs
                                             FileStream stream2 = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                                             StreamReader reader2 = new StreamReader(stream2); 
                                             while ((kw_line = await reader.ReadLineAsync()) != null)
-                                            {                                                                    
-                                                reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
-                                                txt_ReadLogs.AppendText(kw_line + "\r\n");
-                                                TB.AppendText(kw_line + "\r\n");
-                                                if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                            {
+                                                try
                                                 {
-                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
-                                                    txt_ReadLogs.AppendText("****************" + "\r\n");
-                                                    TB.AppendText("****************" + "\r\n");
-                                                    reader2.Close();
-                                                    break;
+                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
+                                                    txt_ReadLogs.AppendText(kw_line + "\r\n");
+                                                    TB.AppendText(kw_line + "\r\n");
+                                                    if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                                    {
+                                                        reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
+                                                        txt_ReadLogs.AppendText("****************" + "\r\n");
+                                                        TB.AppendText("****************" + "\r\n");
+                                                        stream2.Close();
+                                                        reader2.Close();
+                                                        break;
+                                                    }
+                                                }
+                                                catch(Exception ex)
+                                                {
+                                                    MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                                 }
                                                 #region Stop
                                                 if (loopthis == false)
@@ -267,7 +293,13 @@ namespace Read_logs
             txt_ReadLogs.Text = "";
             if (btn_press == false)
             {
-                Panel_Tag.Controls.Clear();
+                foreach (Panel _Panel in Panel_Tag.Controls)
+                {
+                    if (_Panel.Name != "Panel_Main")
+                    {
+                        Panel_Tag.Controls.Remove(_Panel);
+                    }
+                }
             }
             txt_search.Text = "";
             using (FileStream stream = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -334,17 +366,17 @@ namespace Read_logs
                     break;
                 }
             }
-            if (Panel_Tag.Controls.Count == 0)
+            if (Panel_Tag.Controls.Count == 1)
             {
                 txt_ReadLogs.BringToFront();
                 txt_ReadLogs.Visible = true;
             }
-            else if (Panel_Tag.Controls.Count >= 1)
+            else if (Panel_Tag.Controls.Count >= 2)
             {
                 int PanelLeftPos = 0;
                 foreach (Panel _panel in Panel_Tag.Controls)
                 {
-                    _panel.Left = _panel.Width * (PanelLeftPos);
+                    _panel.Left = Panel_Main.Width + _panel.Width * (PanelLeftPos - 1);
                     PanelLeftPos++;
                 }
             }
@@ -408,14 +440,20 @@ namespace Read_logs
                 if (tmpfile != txt_Infile.Text)
                 {
                     //Clear all and start a new
-                    Panel_Tag.Controls.Clear();
+                    foreach (Panel _Panel in Panel_Tag.Controls)
+                    {
+                        if (_Panel.Name != "Panel_Main")
+                        {
+                            Panel_Tag.Controls.Remove(_Panel);
+                        }
+                    }
                     txt_ReadLogs.Text = string.Empty;
                 }
                 try
                 {
                     txt_ReadLogs.BringToFront();
                     txt_ReadLogs.Visible = true;
-                    if (Panel_Tag.Controls.Count == 0 && txt_search.Text == string.Empty)
+                    if (Panel_Tag.Controls.Count == 1 && txt_search.Text == string.Empty)
                     {
                         var msg = MessageBox.Show("Read all lines?", "Think carefully", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                         if (msg == DialogResult.OK)
@@ -425,7 +463,7 @@ namespace Read_logs
                             await Blank_Log_Output();
                         }
                     }
-                    else if (Panel_Tag.Controls.Count > 0 && txt_search.Text == string.Empty)
+                    else if (Panel_Tag.Controls.Count > 1 && txt_search.Text == string.Empty)
                     {
                         foreach (TextBox TB in Panel_ReadLogs.Controls)
                         {
@@ -438,7 +476,7 @@ namespace Read_logs
                         btn_Start.Text = "Stop";
                         await Log_Output();
                     }
-                    else if (Panel_Tag.Controls.Count > 0)
+                    else if (Panel_Tag.Controls.Count > 2)
                     {
                         string[] splitText;
                         splitText = txt_search.Text.Split(',');
@@ -513,6 +551,9 @@ namespace Read_logs
             var dlgOK = dlg.ShowDialog();
             if (dlgOK == DialogResult.OK)
             {
+                RemoveReadLogsControls();
+                txt_ReadLogs.Text = "";
+                btn_press = false;
                 txt_Infile.Text = dlg.FileName;
             }
         }
@@ -571,6 +612,12 @@ namespace Read_logs
                 }
             }
             return reader.BaseStream.Position - numBytesLeft - numFragments;
+        }
+
+        private void tag_readlog_Click(object sender, EventArgs e)
+        {
+            txt_ReadLogs.Visible = true;
+            txt_ReadLogs.BringToFront();
         }
     }     
 }
