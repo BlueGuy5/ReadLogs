@@ -320,12 +320,7 @@ namespace Read_logs
                     {
                         txt_ReadLogs.AppendText(line + "\r\n");
                     }
-                    lbl_StreamReader.Text = "Open";
-                    if (lbl_StreamReader.Text == "Open")
-                    {
-                        lbl_StreamReader.ForeColor = Color.Green;
-                    }
-                    if (btn_Start.Text != "Stop")
+                    if (loopthis == false)
                     {
                         lbl_StreamReader.Text = "Close";
                         lbl_StreamReader.ForeColor = Color.Red;
@@ -347,12 +342,15 @@ namespace Read_logs
                     lbl_StreamReader.Text = "pending";
                     lbl_StreamReader.ForeColor = Color.Green;
                 }
-            }
-            if (loopthis == false)
-            {
-                lbl_StreamReader.Text = "Close";
-                lbl_StreamReader.ForeColor = Color.Red;
-            }            
+
+                if (loopthis == false)
+                {
+                    stream.Close();
+                    reader.Close();
+                    lbl_StreamReader.Text = "Close";
+                    lbl_StreamReader.ForeColor = Color.Red;
+                }
+            }         
         }
         private void btn_close_keyword_Click(object sender, EventArgs e)
         {
@@ -536,7 +534,7 @@ namespace Read_logs
                 btn_Start.Text = "Stop";
                 await Log_Output();
             }
-            else if (Panel_Tag.Controls.Count > 1)
+            else if (Panel_Tag.Controls.Count >= 1)
             {
                 string[] splitText;
                 splitText = txt_search.Text.Split(',');
