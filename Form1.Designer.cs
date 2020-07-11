@@ -35,6 +35,8 @@
             this.txt_Infile = new System.Windows.Forms.TextBox();
             this.btn_OpenFile = new System.Windows.Forms.Button();
             this.Panel_Tag = new System.Windows.Forms.Panel();
+            this.Panel_Main = new System.Windows.Forms.Panel();
+            this.tag_readlog = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lbl_StreamReader = new System.Windows.Forms.Label();
             this.Panel_ReadLogs = new System.Windows.Forms.Panel();
@@ -44,12 +46,11 @@
             this.txt_wait = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btn_Browse = new System.Windows.Forms.Button();
-            this.tag_readlog = new System.Windows.Forms.Button();
-            this.Panel_Main = new System.Windows.Forms.Panel();
+            this.btn_Add = new System.Windows.Forms.Button();
             this.Panel_Tag.SuspendLayout();
+            this.Panel_Main.SuspendLayout();
             this.Panel_ReadLogs.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.Panel_Main.SuspendLayout();
             this.SuspendLayout();
             // 
             // txt_ReadLogs
@@ -90,7 +91,7 @@
             this.txt_search.ForeColor = System.Drawing.Color.DarkBlue;
             this.txt_search.Location = new System.Drawing.Point(12, 443);
             this.txt_search.Name = "txt_search";
-            this.txt_search.Size = new System.Drawing.Size(770, 26);
+            this.txt_search.Size = new System.Drawing.Size(732, 26);
             this.txt_search.TabIndex = 2;
             // 
             // txt_Infile
@@ -129,6 +130,29 @@
             this.Panel_Tag.Name = "Panel_Tag";
             this.Panel_Tag.Size = new System.Drawing.Size(852, 31);
             this.Panel_Tag.TabIndex = 6;
+            // 
+            // Panel_Main
+            // 
+            this.Panel_Main.Controls.Add(this.tag_readlog);
+            this.Panel_Main.Location = new System.Drawing.Point(3, 0);
+            this.Panel_Main.Name = "Panel_Main";
+            this.Panel_Main.Size = new System.Drawing.Size(50, 31);
+            this.Panel_Main.TabIndex = 1;
+            // 
+            // tag_readlog
+            // 
+            this.tag_readlog.BackColor = System.Drawing.Color.AliceBlue;
+            this.tag_readlog.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.tag_readlog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tag_readlog.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.tag_readlog.ForeColor = System.Drawing.Color.DarkBlue;
+            this.tag_readlog.Location = new System.Drawing.Point(0, 0);
+            this.tag_readlog.Name = "tag_readlog";
+            this.tag_readlog.Size = new System.Drawing.Size(50, 31);
+            this.tag_readlog.TabIndex = 19;
+            this.tag_readlog.Text = "Main";
+            this.tag_readlog.UseVisualStyleBackColor = false;
+            this.tag_readlog.Click += new System.EventHandler(this.tag_readlog_Click);
             // 
             // label1
             // 
@@ -226,28 +250,20 @@
             this.btn_Browse.UseVisualStyleBackColor = false;
             this.btn_Browse.Click += new System.EventHandler(this.btn_Browse_Click);
             // 
-            // tag_readlog
+            // btn_Add
             // 
-            this.tag_readlog.BackColor = System.Drawing.Color.AliceBlue;
-            this.tag_readlog.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.tag_readlog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tag_readlog.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.tag_readlog.ForeColor = System.Drawing.Color.DarkBlue;
-            this.tag_readlog.Location = new System.Drawing.Point(0, 0);
-            this.tag_readlog.Name = "tag_readlog";
-            this.tag_readlog.Size = new System.Drawing.Size(50, 31);
-            this.tag_readlog.TabIndex = 19;
-            this.tag_readlog.Text = "Main";
-            this.tag_readlog.UseVisualStyleBackColor = false;
-            this.tag_readlog.Click += new System.EventHandler(this.tag_readlog_Click);
-            // 
-            // Panel_Main
-            // 
-            this.Panel_Main.Controls.Add(this.tag_readlog);
-            this.Panel_Main.Location = new System.Drawing.Point(3, 0);
-            this.Panel_Main.Name = "Panel_Main";
-            this.Panel_Main.Size = new System.Drawing.Size(50, 31);
-            this.Panel_Main.TabIndex = 1;
+            this.btn_Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Add.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_Add.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_Add.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_Add.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btn_Add.Location = new System.Drawing.Point(750, 444);
+            this.btn_Add.Name = "btn_Add";
+            this.btn_Add.Size = new System.Drawing.Size(32, 26);
+            this.btn_Add.TabIndex = 19;
+            this.btn_Add.Text = "+";
+            this.btn_Add.UseVisualStyleBackColor = false;
+            this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
             // 
             // Form1
             // 
@@ -256,6 +272,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(876, 503);
+            this.Controls.Add(this.btn_Add);
             this.Controls.Add(this.btn_Browse);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.btn_OpenFile);
@@ -272,11 +289,11 @@
             this.Text = "Better than Cygwin";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Panel_Tag.ResumeLayout(false);
+            this.Panel_Main.ResumeLayout(false);
             this.Panel_ReadLogs.ResumeLayout(false);
             this.Panel_ReadLogs.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.Panel_Main.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -301,6 +318,7 @@
         private System.Windows.Forms.Button btn_Browse;
         private System.Windows.Forms.Button tag_readlog;
         private System.Windows.Forms.Panel Panel_Main;
+        private System.Windows.Forms.Button btn_Add;
     }
 }
 
