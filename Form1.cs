@@ -155,6 +155,7 @@ namespace Read_logs
             if (btn_press == false)
             {
                 //Panel_Tag.Controls.Clear();
+                /*
                 foreach(Panel _Panel in Panel_Tag.Controls)
                 {
                     if (_Panel.Name != "Panel_Main")
@@ -162,6 +163,7 @@ namespace Read_logs
                         Panel_Tag.Controls.Remove(_Panel);
                     }
                 }
+                */
                 RemoveReadLogsControls();
                 foreach (string searchText in splitText)
                 {
@@ -276,12 +278,15 @@ namespace Read_logs
                         lbl_StreamReader.Text = "pending";
                         lbl_StreamReader.ForeColor = Color.Green;
                     }
-                }
-            if (loopthis == false)
-            {
-                lbl_StreamReader.Text = "Close";
-                lbl_StreamReader.ForeColor = Color.Red;
-            }                  
+
+                    if (loopthis == false)
+                    {
+                        stream.Close();
+                        reader.Close();
+                        lbl_StreamReader.Text = "Close";
+                        lbl_StreamReader.ForeColor = Color.Red;
+                    }
+                }               
         }
 
         private async Task Blank_Log_Output()
@@ -293,6 +298,7 @@ namespace Read_logs
             txt_ReadLogs.Text = "";
             if (btn_press == false)
             {
+                /*
                 foreach (Panel _Panel in Panel_Tag.Controls)
                 {
                     if (_Panel.Name != "Panel_Main")
@@ -300,6 +306,7 @@ namespace Read_logs
                         Panel_Tag.Controls.Remove(_Panel);
                     }
                 }
+                */
             }
             txt_search.Text = "";
             using (FileStream stream = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -354,6 +361,7 @@ namespace Read_logs
             {
                 if(_panel.Name == _btn.Name)
                 {
+                    _panel.Dispose();
                     Panel_Tag.Controls.Remove(_panel);
                     break;
                 }
@@ -362,6 +370,7 @@ namespace Read_logs
             {
                 if(TB.Name == _btn.Name)
                 {
+                    TB.Dispose();
                     Panel_ReadLogs.Controls.Remove(TB);
                     break;
                 }
@@ -371,7 +380,7 @@ namespace Read_logs
                 txt_ReadLogs.BringToFront();
                 txt_ReadLogs.Visible = true;
             }
-            else if (Panel_Tag.Controls.Count >= 2)
+            else if (Panel_Tag.Controls.Count > 1)
             {
                 int PanelLeftPos = 0;
                 foreach (Panel _panel in Panel_Tag.Controls)
@@ -426,31 +435,50 @@ namespace Read_logs
             {
                 if (TB.Name != "txt_ReadLogs")
                 {
+                    TB.Dispose();
                     Panel_ReadLogs.Controls.Remove(TB);
+                }
+            }
+        }
+        private void Remove_Panel_Tags()
+        {
+            while (Panel_Tag.Controls.Count > 1)
+            {
+                foreach (Panel _Panel in Panel_Tag.Controls)
+                {
+                    if (_Panel.Name != "Panel_Main")
+                    {
+                        _Panel.Dispose();
+                        Panel_Tag.Controls.Remove(_Panel);
+                    }
                 }
             }
         }
         private async void btn_Start_ClickAsync(object sender, EventArgs e)
         {
-            if (btn_Start.Text == "Run")
+            try
             {
-                txt_Infile.Enabled = false;
-                btn_Browse.Enabled = false;
-                Get_FileSize();
-                if (tmpfile != txt_Infile.Text)
+                if (btn_Start.Text == "Run")
                 {
-                    //Clear all and start a new
-                    foreach (Panel _Panel in Panel_Tag.Controls)
+
+                    txt_Infile.Enabled = false;
+                    btn_Browse.Enabled = false;
+                    btn_press = false;
+                    Get_FileSize();
+                    if (tmpfile != txt_Infile.Text)
                     {
-                        if (_Panel.Name != "Panel_Main")
+                        //Clear all and start a new
+                        /*
+                        foreach (Panel _Panel in Panel_Tag.Controls)
                         {
-                            Panel_Tag.Controls.Remove(_Panel);
+                            if (_Panel.Name != "Panel_Main")
+                            {
+                                Panel_Tag.Controls.Remove(_Panel);
+                            }
                         }
+                        txt_ReadLogs.Text = string.Empty;
+                        */
                     }
-                    txt_ReadLogs.Text = string.Empty;
-                }
-                try
-                {
                     txt_ReadLogs.BringToFront();
                     txt_ReadLogs.Visible = true;
                     if (Panel_Tag.Controls.Count == 1 && txt_search.Text == string.Empty)
@@ -463,42 +491,9 @@ namespace Read_logs
                             await Blank_Log_Output();
                         }
                     }
-                    else if (Panel_Tag.Controls.Count > 1 && txt_search.Text == string.Empty)
-                    {
-                        foreach (TextBox TB in Panel_ReadLogs.Controls)
-                        {
-                            if (TB.Name != "txt_ReadLogs")
-                            {
-                                TB.Visible = false;
-                            }
-                        }
-                        btn_press = true;
-                        btn_Start.Text = "Stop";
-                        await Log_Output();
-                    }
-                    else if (Panel_Tag.Controls.Count > 2)
-                    {
-                        string[] splitText;
-                        splitText = txt_search.Text.Split(',');
-                        foreach (string searchText in splitText)
-                        {
-                            CreateTags(searchText);
-                        }
-                        foreach (TextBox TB in Panel_ReadLogs.Controls)
-                        {
-                            if (TB.Name != "txt_ReadLogs")
-                            {
-                                TB.Visible = false;
-                            }
-                        }
-                        btn_press = true;
-                        btn_Start.Text = "Stop";
-                        await Log_Output();
-                    }
                     else if (txt_search.Text.Last() == ',')
                     {
                         RemoveReadLogsControls();
-                        btn_press = false;
                         txt_search.Text = txt_search.Text.Substring(0, txt_search.Text.Length - 1);
                         btn_Start.Text = "Stop";
                         await Log_Output();
@@ -506,25 +501,60 @@ namespace Read_logs
                     else
                     {
                         RemoveReadLogsControls();
-                        btn_press = false;
                         btn_Start.Text = "Stop";
                         await Log_Output();
                     }
+                
                 }
-                catch (Exception ex)
+                else if(btn_Start.Text == "Stop")
                 {
-                    MessageBox.Show(ex.Message, "btn_Start_ClickAsync", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    loopthis = false;
+                    btn_Start.Text = "Run";
+                    txt_Infile.Enabled = true;
+                    btn_Browse.Enabled = true;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                loopthis = false;
-                btn_Start.Text = "Run";
+                MessageBox.Show(ex.Message, "btn_Start_ClickAsync", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txt_Infile.Enabled = true;
                 btn_Browse.Enabled = true;
             }
         }
-
+        private async void btn_Add_Click(object sender, EventArgs e)
+        {
+            btn_press = true;
+            if (Panel_Tag.Controls.Count > 1 && txt_search.Text == string.Empty)
+            {
+                foreach (TextBox TB in Panel_ReadLogs.Controls)
+                {
+                    if (TB.Name != "txt_ReadLogs")
+                    {
+                        TB.Visible = false;
+                    }
+                }                
+                btn_Start.Text = "Stop";
+                await Log_Output();
+            }
+            else if (Panel_Tag.Controls.Count > 1)
+            {
+                string[] splitText;
+                splitText = txt_search.Text.Split(',');
+                foreach (string searchText in splitText)
+                {
+                    CreateTags(searchText);
+                }
+                foreach (TextBox TB in Panel_ReadLogs.Controls)
+                {
+                    if (TB.Name != "txt_ReadLogs")
+                    {
+                        TB.Visible = false;
+                    }
+                }
+                btn_Start.Text = "Stop";
+                await Log_Output();
+            }
+        }
         private void btn_OpenFile_Click(object sender, EventArgs e)
         {
             try
@@ -551,10 +581,11 @@ namespace Read_logs
             var dlgOK = dlg.ShowDialog();
             if (dlgOK == DialogResult.OK)
             {
+                txt_Infile.Text = dlg.FileName;
                 RemoveReadLogsControls();
+                Remove_Panel_Tags();
                 txt_ReadLogs.Text = "";
                 btn_press = false;
-                txt_Infile.Text = dlg.FileName;
             }
         }
         private void CloseApp(object sender, FormClosingEventArgs e)
