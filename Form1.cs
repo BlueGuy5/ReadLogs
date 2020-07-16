@@ -153,17 +153,7 @@ namespace Read_logs
 
             splitText = txt_search.Text.Split(',');
             if (btn_press == false)
-            {
-                //Panel_Tag.Controls.Clear();
-                /*
-                foreach(Panel _Panel in Panel_Tag.Controls)
-                {
-                    if (_Panel.Name != "Panel_Main")
-                    {
-                        Panel_Tag.Controls.Remove(_Panel);
-                    }
-                }
-                */
+            {           
                 RemoveReadLogsControls();
                 foreach (string searchText in splitText)
                 {
@@ -298,15 +288,7 @@ namespace Read_logs
             txt_ReadLogs.Text = "";
             if (btn_press == false)
             {
-                /*
-                foreach (Panel _Panel in Panel_Tag.Controls)
-                {
-                    if (_Panel.Name != "Panel_Main")
-                    {
-                        Panel_Tag.Controls.Remove(_Panel);
-                    }
-                }
-                */
+                //code deleted
             }
             txt_search.Text = "";
             using (FileStream stream = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -466,16 +448,7 @@ namespace Read_logs
                     if (tmpfile != txt_Infile.Text)
                     {
                         //Clear all and start a new
-                        /*
-                        foreach (Panel _Panel in Panel_Tag.Controls)
-                        {
-                            if (_Panel.Name != "Panel_Main")
-                            {
-                                Panel_Tag.Controls.Remove(_Panel);
-                            }
-                        }
-                        txt_ReadLogs.Text = string.Empty;
-                        */
+
                     }
                     txt_ReadLogs.BringToFront();
                     txt_ReadLogs.Visible = true;
@@ -541,13 +514,6 @@ namespace Read_logs
                 foreach (string searchText in splitText)
                 {
                     CreateTags(searchText);
-                }
-                foreach (TextBox TB in Panel_ReadLogs.Controls)
-                {
-                    if (TB.Name != "txt_ReadLogs")
-                    {
-                        TB.Visible = false;
-                    }
                 }
                 btn_Start.Text = "Stop";
                 await Log_Output();
