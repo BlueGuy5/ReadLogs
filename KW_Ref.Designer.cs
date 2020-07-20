@@ -30,14 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KW_Ref));
             this.Panel_OTA = new System.Windows.Forms.Panel();
+            this.button24 = new System.Windows.Forms.Button();
+            this.button23 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btn_OTA1 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.Panel_Phone = new System.Windows.Forms.Panel();
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
@@ -48,22 +50,29 @@
             this.button14 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
             this.Panel_Shipmode = new System.Windows.Forms.Panel();
+            this.button19 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
-            this.button19 = new System.Windows.Forms.Button();
+            this.panel_cmd = new System.Windows.Forms.Panel();
+            this.button20 = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button22 = new System.Windows.Forms.Button();
+            this.button21 = new System.Windows.Forms.Button();
             this.Panel_OTA.SuspendLayout();
             this.Panel_Phone.SuspendLayout();
             this.Panel_OOR.SuspendLayout();
             this.Panel_Shipmode.SuspendLayout();
+            this.panel_cmd.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_OTA
             // 
+            this.Panel_OTA.Controls.Add(this.button24);
+            this.Panel_OTA.Controls.Add(this.button23);
             this.Panel_OTA.Controls.Add(this.button7);
-            this.Panel_OTA.Controls.Add(this.button6);
-            this.Panel_OTA.Controls.Add(this.button5);
             this.Panel_OTA.Controls.Add(this.button4);
             this.Panel_OTA.Controls.Add(this.button3);
             this.Panel_OTA.Controls.Add(this.button2);
@@ -71,8 +80,28 @@
             this.Panel_OTA.Controls.Add(this.btn_OTA1);
             this.Panel_OTA.Location = new System.Drawing.Point(16, 14);
             this.Panel_OTA.Name = "Panel_OTA";
-            this.Panel_OTA.Size = new System.Drawing.Size(151, 353);
+            this.Panel_OTA.Size = new System.Drawing.Size(151, 359);
             this.Panel_OTA.TabIndex = 0;
+            // 
+            // button24
+            // 
+            this.button24.Location = new System.Drawing.Point(3, 309);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(144, 39);
+            this.button24.TabIndex = 7;
+            this.button24.Text = "Orientation";
+            this.button24.UseVisualStyleBackColor = true;
+            this.button24.Click += new System.EventHandler(this.btn_click);
+            // 
+            // button23
+            // 
+            this.button23.Location = new System.Drawing.Point(3, 219);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(144, 39);
+            this.button23.TabIndex = 6;
+            this.button23.Text = "successfully wrote segment (component: dsp_ww";
+            this.button23.UseVisualStyleBackColor = true;
+            this.button23.Click += new System.EventHandler(this.btn_click);
             // 
             // button7
             // 
@@ -83,26 +112,6 @@
             this.button7.Text = "OTA";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.btn_title_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(3, 309);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(144, 39);
-            this.button6.TabIndex = 7;
-            this.button6.Text = "edsp fw_version";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.btn_click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(3, 264);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(144, 39);
-            this.button5.TabIndex = 6;
-            this.button5.Text = "bt dump profile_status";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.btn_click);
             // 
             // button4
             // 
@@ -136,7 +145,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(3, 219);
+            this.button1.Location = new System.Drawing.Point(3, 264);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(144, 39);
             this.button1.TabIndex = 2;
@@ -153,6 +162,26 @@
             this.btn_OTA1.Text = "Attempting to start a new download of version";
             this.btn_OTA1.UseVisualStyleBackColor = true;
             this.btn_OTA1.Click += new System.EventHandler(this.btn_click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(3, 84);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(144, 39);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "$edsp fw_version";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.btn_click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(3, 43);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(144, 39);
+            this.button5.TabIndex = 6;
+            this.button5.Text = "$bt dump profile_status";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.btn_click);
             // 
             // Panel_Phone
             // 
@@ -257,6 +286,16 @@
             this.Panel_Shipmode.Size = new System.Drawing.Size(152, 223);
             this.Panel_Shipmode.TabIndex = 3;
             // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(5, 178);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(144, 39);
+            this.button19.TabIndex = 6;
+            this.button19.Text = "$zapp runtime";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.btn_click);
+            // 
             // button12
             // 
             this.button12.Location = new System.Drawing.Point(3, 3);
@@ -273,7 +312,7 @@
             this.button16.Name = "button16";
             this.button16.Size = new System.Drawing.Size(144, 39);
             this.button16.TabIndex = 5;
-            this.button16.Text = "dtest shipmode";
+            this.button16.Text = "$dtest shipmode";
             this.button16.UseVisualStyleBackColor = true;
             this.button16.Click += new System.EventHandler(this.btn_click);
             // 
@@ -283,7 +322,7 @@
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(144, 39);
             this.button17.TabIndex = 4;
-            this.button17.Text = "bt unpair_all";
+            this.button17.Text = "$bt unpair_all";
             this.button17.UseVisualStyleBackColor = true;
             this.button17.Click += new System.EventHandler(this.btn_click);
             // 
@@ -293,25 +332,64 @@
             this.button18.Name = "button18";
             this.button18.Size = new System.Drawing.Size(144, 39);
             this.button18.TabIndex = 1;
-            this.button18.Text = "dtest battery_capacity";
+            this.button18.Text = "$dtest battery_capacity";
             this.button18.UseVisualStyleBackColor = true;
             this.button18.Click += new System.EventHandler(this.btn_click);
             // 
-            // button19
+            // panel_cmd
             // 
-            this.button19.Location = new System.Drawing.Point(5, 178);
-            this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(144, 39);
-            this.button19.TabIndex = 6;
-            this.button19.Text = "zapp runtime";
-            this.button19.UseVisualStyleBackColor = true;
-            this.button19.Click += new System.EventHandler(this.btn_click);
+            this.panel_cmd.Controls.Add(this.button20);
+            this.panel_cmd.Controls.Add(this.button6);
+            this.panel_cmd.Controls.Add(this.button5);
+            this.panel_cmd.Location = new System.Drawing.Point(189, 205);
+            this.panel_cmd.Name = "panel_cmd";
+            this.panel_cmd.Size = new System.Drawing.Size(152, 134);
+            this.panel_cmd.TabIndex = 4;
+            // 
+            // button20
+            // 
+            this.button20.Location = new System.Drawing.Point(3, 3);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(144, 34);
+            this.button20.TabIndex = 3;
+            this.button20.Text = "Command";
+            this.button20.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.button22);
+            this.panel1.Controls.Add(this.button21);
+            this.panel1.Location = new System.Drawing.Point(192, 345);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(151, 104);
+            this.panel1.TabIndex = 5;
+            // 
+            // button22
+            // 
+            this.button22.Location = new System.Drawing.Point(4, 41);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(144, 39);
+            this.button22.TabIndex = 3;
+            this.button22.Text = "$Zebra Hard Fault Error";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.btn_click);
+            // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(3, 3);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(144, 34);
+            this.button21.TabIndex = 2;
+            this.button21.Text = "Errors";
+            this.button21.UseVisualStyleBackColor = true;
             // 
             // KW_Ref
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(521, 401);
+            this.ClientSize = new System.Drawing.Size(521, 514);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panel_cmd);
             this.Controls.Add(this.Panel_Shipmode);
             this.Controls.Add(this.Panel_OOR);
             this.Controls.Add(this.Panel_Phone);
@@ -327,6 +405,8 @@
             this.Panel_Phone.ResumeLayout(false);
             this.Panel_OOR.ResumeLayout(false);
             this.Panel_Shipmode.ResumeLayout(false);
+            this.panel_cmd.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -357,5 +437,12 @@
         private System.Windows.Forms.Button button17;
         private System.Windows.Forms.Button button18;
         private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Panel panel_cmd;
+        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.Button button23;
     }
 }
