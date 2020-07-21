@@ -25,6 +25,16 @@ namespace Read_logs
             KeyDown += new KeyEventHandler(F1KeyPress);
             this.FormClosing += new FormClosingEventHandler(CloseApp);
         }
+        public struct GlobalVar
+        {
+            public string tmpfile { get; set; }
+            public bool loopthis { get; set; }
+            public bool btn_press { get; set; }
+            public TextBox txt_multilogs { get; set; }
+            public List<string> list_commands { get; set; }          
+        }
+        public GlobalVar _GlobalVar = new GlobalVar();
+        List<string> list_commands = new List<string>();
 
         private async void Form1_Load(object sender, EventArgs e)
         {
@@ -71,12 +81,10 @@ namespace Read_logs
             txt_filesize.Text = filesize.ToString() + " KB";
         }
         
-        string tmpfile;
-        bool loopthis = false;
-        bool btn_press = false;
-        TextBox txt_multilogs;
         private void CreateTags(string searchText)
         {
+            //GlobalVar _GlobalVar = new GlobalVar();
+
             Button btn_close_keyword = new Button();
             btn_close_keyword.Name = searchText;
             btn_close_keyword.Text = "X";
@@ -112,62 +120,78 @@ namespace Read_logs
             Panel_Keywords.Controls.Add(btn_SearchText);
             Panel_Tag.Controls.Add(Panel_Keywords);
             
-            txt_multilogs = new TextBox();
-            txt_multilogs.Name = searchText;
-            txt_multilogs.Dock = DockStyle.Fill;
-            txt_multilogs.Visible = false;
-            txt_multilogs.Multiline = true;
-            txt_multilogs.Font = new Font("Serif", 11);
-            txt_multilogs.Width = txt_ReadLogs.Width;
-            txt_multilogs.Height = txt_ReadLogs.Height;
-            txt_multilogs.Location = txt_ReadLogs.Location;
-            txt_multilogs.ScrollBars = ScrollBars.Vertical;
-            txt_multilogs.ReadOnly = true;
-            txt_multilogs.BackColor = Color.Black;
-            txt_multilogs.ForeColor = Color.GhostWhite;
-            Panel_ReadLogs.Controls.Add(txt_multilogs);
+            _GlobalVar.txt_multilogs = new TextBox();
+            _GlobalVar.txt_multilogs.Name = searchText;
+            _GlobalVar.txt_multilogs.Dock = DockStyle.Fill;
+            _GlobalVar.txt_multilogs.Visible = false;
+            _GlobalVar.txt_multilogs.Multiline = true;
+            _GlobalVar.txt_multilogs.Font = new Font("Serif", 11);
+            _GlobalVar.txt_multilogs.Width = txt_ReadLogs.Width;
+            _GlobalVar.txt_multilogs.Height = txt_ReadLogs.Height;
+            _GlobalVar.txt_multilogs.Location = txt_ReadLogs.Location;
+            _GlobalVar.txt_multilogs.ScrollBars = ScrollBars.Vertical;
+            _GlobalVar.txt_multilogs.ReadOnly = true;
+            _GlobalVar.txt_multilogs.BackColor = Color.Black;
+            _GlobalVar.txt_multilogs.ForeColor = Color.GhostWhite;
+            Panel_ReadLogs.Controls.Add(_GlobalVar.txt_multilogs);
         }
-        private List<string> List_Sub_Keywords()
+        private void RemoveReadLogsControls()
         {
-            var keywords = new List<string>();
-            keywords.Add("bt dump profile_status");
-            keywords.Add("edsp fw_version");
-            //Useful shipmode commands
-            keywords.Add("dtest battery_capacity");
-            keywords.Add("bt unpair_all");
-            keywords.Add("dtest shipmode");
-            keywords.Add("zapp runtime");
-            //Errors
-            keywords.Add("Zebra Hard Fault Error");
-            return keywords;
+            //must remove any existing controls before we proceed again.
+            foreach (TextBox TB in Panel_ReadLogs.Controls)
+            {
+                if (TB.Name != "txt_ReadLogs")
+                {
+                    TB.Dispose();
+                    Panel_ReadLogs.Controls.Remove(TB);
+                }
+            }
         }
+        private void Remove_Panel_Tags()
+        {
+            while (Panel_Tag.Controls.Count > 1)
+            {
+                foreach (Panel _Panel in Panel_Tag.Controls)
+                {
+                    if (_Panel.Name != "Panel_Main")
+                    {
+                        _Panel.Dispose();
+                        Panel_Tag.Controls.Remove(_Panel);
+                    }
+                }
+            }
+        }
+
         private async Task Log_Output()
         {
             string line;
             string kw_line;
-            tmpfile = txt_Infile.Text;
+            _GlobalVar.tmpfile = txt_Infile.Text;
             string[] splitText;
-            loopthis = true;
+            _GlobalVar.loopthis = true;
             bool check_keywords = false;
             long retReaderLinePOS;
 
             splitText = txt_search.Text.Split(',');
-            if (btn_press == false)
-            {           
-                RemoveReadLogsControls();
-                foreach (string searchText in splitText)
+
+            if (_GlobalVar.btn_press == false)
+            {
+                RemoveReadLogsControls();             
+            }
+
+            foreach (string searchText in splitText)
+            {
+                if (searchText.Substring(0, 1) == "$")
                 {
-                    if (searchText.Substring(0, 1) == "$")
-                    {
-                        var newSearchText = searchText.Substring(1, searchText.Length - 1);
-                        CreateTags(newSearchText);
-                    }
-                    else
-                    {
-                        CreateTags(searchText);
-                    }
+                    var newSearchText = searchText.Substring(1, searchText.Length - 1);
+                    CreateTags(newSearchText);
+                }
+                else
+                {
+                    CreateTags(searchText);
                 }
             }
+
             List_command().Clear();
             foreach (string searchText in splitText)
             {             
@@ -176,134 +200,131 @@ namespace Read_logs
                     //Add searchString to Command list here.
                     List_command().Add(searchText.Replace("$",""));
                     check_keywords = true;
-                    //break;
                 }                           
             }
             txt_search.Text = "";
-            using (FileStream stream = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream stream = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(stream))
-                while (loopthis == true)
+            while (_GlobalVar.loopthis == true)
+            {
+                Thread.Sleep(int.Parse(txt_wait.Text));
+                while ((line = await reader.ReadLineAsync()) != null)
                 {
-                    Thread.Sleep(int.Parse(txt_wait.Text));
-                    while ((line = await reader.ReadLineAsync()) != null)
+                    foreach (TextBox TB in Panel_ReadLogs.Controls)
                     {
-                        foreach (TextBox TB in Panel_ReadLogs.Controls)
+                        foreach (string keyword in splitText)
                         {
-                            foreach (string keyword in splitText)
+                            if (TB.Name == keyword)
                             {
-                                if (TB.Name == keyword)
+                                if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
                                 {
-                                    if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                    {
-                                        txt_ReadLogs.AppendText(line + "\r\n");
-                                        TB.AppendText(line + "\r\n");
-                                    }
+                                    txt_ReadLogs.AppendText(line + "\r\n");
+                                    TB.AppendText(line + "\r\n");
                                 }
                             }
                         }
-                        //Should only run this block of code if we are searching commands!
-                        if (check_keywords == true)
+                    }
+                    //Should only run this block of code if we are searching commands!
+                    if (check_keywords == true)
+                    {
+                        kw_line = line;
+                        foreach (TextBox TB in Panel_ReadLogs.Controls)
                         {
-                            kw_line = line;
-                            foreach (TextBox TB in Panel_ReadLogs.Controls)
+                            foreach (string kw_keyword in List_command()) // change List_Sub_Keywords() to List_command
                             {
-                                foreach (string kw_keyword in List_command()) // change List_Sub_Keywords() to List_command
+                                if (TB.Name == kw_keyword)
                                 {
-                                    if (TB.Name == kw_keyword)
+                                    if (kw_line.IndexOf(kw_keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
                                     {
-                                        if (kw_line.IndexOf(kw_keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                        txt_ReadLogs.AppendText(line + "\r\n");
+                                        TB.AppendText(line + "\r\n");
+                                        retReaderLinePOS = GetActualPosition(reader);
+                                        FileStream stream2 = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                                        StreamReader reader2 = new StreamReader(stream2); 
+                                        while ((kw_line = await reader.ReadLineAsync()) != null)
                                         {
-                                            txt_ReadLogs.AppendText(line + "\r\n");
-                                            TB.AppendText(line + "\r\n");
-                                            retReaderLinePOS = GetActualPosition(reader);
-                                            FileStream stream2 = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                                            StreamReader reader2 = new StreamReader(stream2); 
-                                            while ((kw_line = await reader.ReadLineAsync()) != null)
+                                            try
                                             {
-                                                try
+                                                reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
+                                                txt_ReadLogs.AppendText(kw_line + "\r\n");
+                                                TB.AppendText(kw_line + "\r\n");
+                                                if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
                                                 {
-                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
-                                                    txt_ReadLogs.AppendText(kw_line + "\r\n");
-                                                    TB.AppendText(kw_line + "\r\n");
-                                                    if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                                    {
-                                                        reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
-                                                        txt_ReadLogs.AppendText("****************" + "\r\n");
-                                                        TB.AppendText("****************" + "\r\n");
-                                                        stream2.Close();
-                                                        reader2.Close();
-                                                        break;
-                                                    }
-                                                }
-                                                catch(Exception ex)
-                                                {
-                                                    MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                                }
-                                                #region Stop
-                                                if (loopthis == false)
-                                                {
-                                                    lbl_StreamReader.Text = "Close";
-                                                    lbl_StreamReader.ForeColor = Color.Red;
+                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
+                                                    txt_ReadLogs.AppendText("****************" + "\r\n");
+                                                    TB.AppendText("****************" + "\r\n");
+                                                    stream2.Close();
+                                                    reader2.Close();
                                                     break;
                                                 }
-                                                #endregion
                                             }
+                                            catch(Exception ex)
+                                            {
+                                                MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            }
+                                            #region Stop
+                                            if (_GlobalVar.loopthis == false)
+                                            {
+                                                lbl_StreamReader.Text = "Close";
+                                                lbl_StreamReader.ForeColor = Color.Red;
+                                                break;
+                                            }
+                                            #endregion
                                         }
                                     }
                                 }
                             }
                         }
-                        if (line != null)
-                        {
-                            lbl_StreamReader.Text = "reading";
-                            lbl_StreamReader.ForeColor = Color.Blue;
-                        }
                     }
-                    await Get_CPU_Usage();
-                    Get_FileSize();
-                    Get_Ram_Usage();
-                    Thread.Sleep(int.Parse(txt_wait.Text));
-
-                    if (line == null)
+                    if (line != null)
                     {
-                        lbl_StreamReader.Text = "pending";
-                        lbl_StreamReader.ForeColor = Color.Green;
+                        lbl_StreamReader.Text = "reading";
+                        lbl_StreamReader.ForeColor = Color.Blue;
                     }
+                }
+                await Get_CPU_Usage();
+                Get_FileSize();
+                Get_Ram_Usage();
+                Thread.Sleep(int.Parse(txt_wait.Text));
 
-                    if (loopthis == false)
-                    {
-                        stream.Close();
-                        reader.Close();
+                if (line == null)
+                {
+                    lbl_StreamReader.Text = "pending";
+                    lbl_StreamReader.ForeColor = Color.Green;
+                }
 
-                        //must run these steps so file will no longer be in use
-                        txt_Infile.Text = "";
-                        RemoveReadLogsControls();
-                        Remove_Panel_Tags();
-                        txt_ReadLogs.Text = "";
-                        btn_press = false;
-                        //finish steps
+                if (_GlobalVar.loopthis == false)
+                {
+                    stream.Close();
+                    reader.Close();
 
-                        lbl_StreamReader.Text = "Close";
-                        lbl_StreamReader.ForeColor = Color.Red;
-                    }
-                }               
+                    //must run these steps so file will no longer be in use
+                    txt_Infile.Text = "";
+                    RemoveReadLogsControls();
+                    Remove_Panel_Tags();
+                    txt_ReadLogs.Text = "";
+                    _GlobalVar.btn_press = false;
+                    //finish steps
+
+                    lbl_StreamReader.Text = "Close";
+                    lbl_StreamReader.ForeColor = Color.Red;
+                }
+            }               
         }
-
         private async Task Blank_Log_Output()
         {
             string line;
-            tmpfile = txt_Infile.Text;
-            loopthis = true;
-
+            _GlobalVar.tmpfile = txt_Infile.Text;
+            _GlobalVar.loopthis = true;
             txt_ReadLogs.Text = "";
-            if (btn_press == false)
+            if (_GlobalVar.btn_press == false)
             {
                 //code deleted
             }
             txt_search.Text = "";
-            using (FileStream stream = File.Open(tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (FileStream stream = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(stream))
-            while (loopthis == true)
+            while (_GlobalVar.loopthis == true)
             {
                 Thread.Sleep(int.Parse(txt_wait.Text));
                 while ((line = await reader.ReadLineAsync()) != null)
@@ -312,7 +333,7 @@ namespace Read_logs
                     {
                         txt_ReadLogs.AppendText(line + "\r\n");
                     }
-                    if (loopthis == false)
+                    if (_GlobalVar.loopthis == false)
                     {
                         lbl_StreamReader.Text = "Close";
                         lbl_StreamReader.ForeColor = Color.Red;
@@ -335,7 +356,7 @@ namespace Read_logs
                     lbl_StreamReader.ForeColor = Color.Green;
                 }
 
-                if (loopthis == false)
+                if (_GlobalVar.loopthis == false)
                 {
                     stream.Close();
                     reader.Close();
@@ -344,7 +365,7 @@ namespace Read_logs
                         RemoveReadLogsControls();
                         Remove_Panel_Tags();
                         txt_ReadLogs.Text = "";
-                        btn_press = false;
+                        _GlobalVar.btn_press = false;
                         //finish steps
                     lbl_StreamReader.Text = "Close";
                     lbl_StreamReader.ForeColor = Color.Red;
@@ -399,7 +420,7 @@ namespace Read_logs
             {
                 try
                 {
-                    btn_press = true;
+                    _GlobalVar.btn_press = true;
                     await Task.Delay(3);
                     HideTextBox(_btn_SearchText);
                 }
@@ -425,32 +446,7 @@ namespace Read_logs
                 }             
             }
         }
-        private void RemoveReadLogsControls()
-        {
-            //must remove any existing controls before we proceed again.
-            foreach (TextBox TB in Panel_ReadLogs.Controls)
-            {
-                if (TB.Name != "txt_ReadLogs")
-                {
-                    TB.Dispose();
-                    Panel_ReadLogs.Controls.Remove(TB);
-                }
-            }
-        }
-        private void Remove_Panel_Tags()
-        {
-            while (Panel_Tag.Controls.Count > 1)
-            {
-                foreach (Panel _Panel in Panel_Tag.Controls)
-                {
-                    if (_Panel.Name != "Panel_Main")
-                    {
-                        _Panel.Dispose();
-                        Panel_Tag.Controls.Remove(_Panel);
-                    }
-                }
-            }
-        }
+
         private async void btn_Start_ClickAsync(object sender, EventArgs e)
         {
             try
@@ -460,12 +456,11 @@ namespace Read_logs
 
                     txt_Infile.Enabled = false;
                     btn_Browse.Enabled = false;
-                    btn_press = false;
+                    _GlobalVar.btn_press = false;
                     Get_FileSize();
-                    if (tmpfile != txt_Infile.Text)
+                    if (_GlobalVar.tmpfile != txt_Infile.Text)
                     {
                         //Clear all and start a new
-
                     }
                     txt_ReadLogs.BringToFront();
                     txt_ReadLogs.Visible = true;
@@ -501,7 +496,7 @@ namespace Read_logs
                 }
                 else if(btn_Start.Text == "Stop")
                 {
-                    loopthis = false;
+                    _GlobalVar.loopthis = false;
                     btn_Start.Text = "Run";
                     txt_Infile.Enabled = true;
                     btn_Browse.Enabled = true;
@@ -518,7 +513,7 @@ namespace Read_logs
         {
             try
             {
-                btn_press = true;
+                _GlobalVar.btn_press = true;
                 if (Panel_Tag.Controls.Count > 1 && txt_search.Text == string.Empty)
                 {
                     foreach (TextBox TB in Panel_ReadLogs.Controls)
@@ -532,22 +527,8 @@ namespace Read_logs
                     await Log_Output();
                 }
                 else if (Panel_Tag.Controls.Count >= 1)
-                {
-                    string[] splitText;
-                    splitText = txt_search.Text.Split(',');
-                    foreach (string searchText in splitText)
-                    {
-                        if (searchText.Substring(0, 1) == "$")
-                        {
-                            var newSearchText = searchText.Substring(1, searchText.Length - 1);
-                            CreateTags(newSearchText);
-                        }
-                        else
-                        {
-                            CreateTags(searchText);
-                        }
-                    }
-                    btn_Start.Text = "Stop";
+                {    
+                    btn_Start.Text = "Stop";                
                     await Log_Output();
                 }
             }
@@ -586,15 +567,13 @@ namespace Read_logs
                 RemoveReadLogsControls();
                 Remove_Panel_Tags();
                 txt_ReadLogs.Text = "";
-                btn_press = false;
+                _GlobalVar.btn_press = false;
             }
         }
-        List<string> list_commands = new List<string>();
         private List<string> List_command()
         {
-            //var list_commands = new List<string>();
-            //list_commands.Clear();
             return list_commands;
+            //return _GlobalVar.list_commands;
         }
         private void CloseApp(object sender, FormClosingEventArgs e)
         {
