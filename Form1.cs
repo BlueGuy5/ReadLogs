@@ -162,6 +162,37 @@ namespace Read_logs
             }
         }
 
+        private async Task CreateNewStreamReaderAsync(long ReaderPOS, TextBox TB, int linenum)
+        {
+            string line;
+            long ReaderPOSMAx = ReaderPOS + linenum;
+            using (FileStream stream = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (StreamReader reader = new StreamReader(stream))
+            try
+            {
+                reader.BaseStream.Seek(ReaderPOS, SeekOrigin.Begin);
+                while ((line = await reader.ReadLineAsync()) != null)
+                {                 
+                    txt_ReadLogs.AppendText("\r" + line + "\r\n");
+                    TB.AppendText("\r" + line + "\r\n");                       
+                    if (ReaderPOS > ReaderPOSMAx)
+                    {
+                        reader.BaseStream.Seek(ReaderPOS, SeekOrigin.End);
+                        txt_ReadLogs.AppendText("****************" + "\r\n");
+                        TB.AppendText("****************" + "\r\n");
+                        stream.Close();
+                        reader.Close();
+                        break;
+                    }
+                        ReaderPOS++;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "CreateNewStreamReader", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private async Task Log_Output()
         {
             string line;
@@ -216,11 +247,21 @@ namespace Read_logs
                         {
                             if (TB.Name == keyword)
                             {
-                                if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                if (line.IndexOf(keyword.Replace(keyword.Substring(keyword.Length - 3), string.Empty), StringComparison.InvariantCultureIgnoreCase) >= 0)
                                 {
-                                    txt_ReadLogs.AppendText(line + "\r\n");
-                                    TB.AppendText(line + "\r\n");
-                                }
+                                    if (keyword.Contains('[') && keyword.Contains(']'))
+                                    {
+                                        txt_ReadLogs.AppendText(line + "\r\n");
+                                        TB.AppendText(line + "\r\n");
+                                        int getNum = int.Parse(keyword.Substring(keyword.Length - 2, 1)) - 1;
+                                        await CreateNewStreamReaderAsync(GetActualPosition(reader), TB, getNum);
+                                    }
+                                    else
+                                    {
+                                        txt_ReadLogs.AppendText(line + "\r\n");
+                                        TB.AppendText(line + "\r\n");
+                                    }
+                                }                                                                
                             }
                         }
                     }
@@ -300,9 +341,9 @@ namespace Read_logs
 
                     //must run these steps so file will no longer be in use
                     txt_Infile.Text = "";
-                    RemoveReadLogsControls();
-                    Remove_Panel_Tags();
-                    txt_ReadLogs.Text = "";
+                    //RemoveReadLogsControls();
+                    //Remove_Panel_Tags();
+                    //txt_ReadLogs.Text = "";
                     _GlobalVar.btn_press = false;
                     //finish steps
 
@@ -362,9 +403,9 @@ namespace Read_logs
                     reader.Close();
                         //must run these steps so file will no longer be in use
                         txt_Infile.Text = "";
-                        RemoveReadLogsControls();
-                        Remove_Panel_Tags();
-                        txt_ReadLogs.Text = "";
+                        //RemoveReadLogsControls();
+                        //Remove_Panel_Tags();
+                        //txt_ReadLogs.Text = "";
                         _GlobalVar.btn_press = false;
                         //finish steps
                     lbl_StreamReader.Text = "Close";
