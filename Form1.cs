@@ -256,7 +256,7 @@ namespace Read_logs
                                         int getNum = int.Parse(keyword.Substring(keyword.Length - 2, 1)) - 1;
                                         await CreateNewStreamReaderAsync(GetActualPosition(reader), TB, getNum);
                                     }
-                                    else
+                                    else if (line.IndexOf(keyword,StringComparison.InvariantCultureIgnoreCase) >=0)
                                     {
                                         txt_ReadLogs.AppendText(line + "\r\n");
                                         TB.AppendText(line + "\r\n");
@@ -340,11 +340,11 @@ namespace Read_logs
                     reader.Close();
 
                     //must run these steps so file will no longer be in use
-                    txt_Infile.Text = "";
+                    //txt_Infile.Text = "";
                     //RemoveReadLogsControls();
                     //Remove_Panel_Tags();
                     //txt_ReadLogs.Text = "";
-                    _GlobalVar.btn_press = false;
+                    //_GlobalVar.btn_press = false;
                     //finish steps
 
                     lbl_StreamReader.Text = "Close";
@@ -402,11 +402,11 @@ namespace Read_logs
                     stream.Close();
                     reader.Close();
                         //must run these steps so file will no longer be in use
-                        txt_Infile.Text = "";
+                        //txt_Infile.Text = "";
                         //RemoveReadLogsControls();
                         //Remove_Panel_Tags();
                         //txt_ReadLogs.Text = "";
-                        _GlobalVar.btn_press = false;
+                        //_GlobalVar.btn_press = false;
                         //finish steps
                     lbl_StreamReader.Text = "Close";
                     lbl_StreamReader.ForeColor = Color.Red;
@@ -616,6 +616,11 @@ namespace Read_logs
             return list_commands;
             //return _GlobalVar.list_commands;
         }
+        private void tag_readlog_Click(object sender, EventArgs e)
+        {
+            txt_ReadLogs.Visible = true;
+            txt_ReadLogs.BringToFront();
+        }
         private void CloseApp(object sender, FormClosingEventArgs e)
         {
             this.Dispose();
@@ -671,12 +676,6 @@ namespace Read_logs
                 }
             }
             return reader.BaseStream.Position - numBytesLeft - numFragments;
-        }
-
-        private void tag_readlog_Click(object sender, EventArgs e)
-        {
-            txt_ReadLogs.Visible = true;
-            txt_ReadLogs.BringToFront();
         }
     }     
 }
