@@ -31,7 +31,9 @@ namespace Read_logs
             public bool loopthis { get; set; }
             public bool btn_press { get; set; }
             public TextBox txt_multilogs { get; set; }
-            public List<string> list_commands { get; set; }          
+            public List<string> list_commands { get; set; }
+            public bool RequestCurrentReaderPOS { get; set; }
+            public long GetCurrentReaderPOS { get; set; }
         }
         public GlobalVar _GlobalVar = new GlobalVar();
         List<string> list_commands = new List<string>();
@@ -241,6 +243,11 @@ namespace Read_logs
                 Thread.Sleep(int.Parse(txt_wait.Text));
                 while ((line = await reader.ReadLineAsync()) != null)
                 {
+                    if (_GlobalVar.RequestCurrentReaderPOS == true)
+                    {
+                        _GlobalVar.GetCurrentReaderPOS = stream.Length;
+                        _GlobalVar.RequestCurrentReaderPOS = false;
+                    }
                     foreach (TextBox TB in Panel_ReadLogs.Controls)
                     {
                         foreach (string keyword in splitText)
@@ -258,7 +265,11 @@ namespace Read_logs
                                     }
                                     else if (line.IndexOf(keyword,StringComparison.InvariantCultureIgnoreCase) >=0)
                                     {
-                                        txt_ReadLogs.AppendText(line + "\r\n");
+                                        //Calling GetActualPosition each time may cause slowdown. This need to be tested.
+                                        if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader))
+                                        {
+                                            txt_ReadLogs.AppendText(line + "\r\n");
+                                        }
                                         TB.AppendText(line + "\r\n");
                                     }
                                 }                                                                
@@ -494,7 +505,8 @@ namespace Read_logs
             {
                 if (btn_Start.Text == "Run")
                 {
-
+                    _GlobalVar.GetCurrentReaderPOS = 0;
+                    _GlobalVar.RequestCurrentReaderPOS = false;
                     txt_Infile.Enabled = false;
                     btn_Browse.Enabled = false;
                     _GlobalVar.btn_press = false;
@@ -554,6 +566,11 @@ namespace Read_logs
         {
             try
             {
+                if (lbl_StreamReader.Text == "Close" || lbl_StreamReader.Text == "Ready")
+                {
+                    Remove_Panel_Tags();
+                    RemoveReadLogsControls();
+                }
                 _GlobalVar.btn_press = true;
                 if (Panel_Tag.Controls.Count > 1 && txt_search.Text == string.Empty)
                 {
@@ -564,14 +581,17 @@ namespace Read_logs
                             TB.Visible = false;
                         }
                     }
-                    btn_Start.Text = "Stop";
-                    await Log_Output();
+                    //btn_Start.Text = "Stop";
+                    //await Log_Output();
                 }
-                else if (Panel_Tag.Controls.Count >= 1)
-                {    
-                    btn_Start.Text = "Stop";                
-                    await Log_Output();
-                }
+                _GlobalVar.RequestCurrentReaderPOS = true;
+                btn_Start.Text = "Stop";
+                await Log_Output();
+                //else if (Panel_Tag.Controls.Count >= 1)
+                //{    
+                //    btn_Start.Text = "Stop";                
+                //    await Log_Output();
+                //}               
             }
             catch(Exception ex)
             {
