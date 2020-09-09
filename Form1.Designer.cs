@@ -170,9 +170,9 @@
             this.lbl_StreamReader.AutoSize = true;
             this.lbl_StreamReader.Location = new System.Drawing.Point(102, 6);
             this.lbl_StreamReader.Name = "lbl_StreamReader";
-            this.lbl_StreamReader.Size = new System.Drawing.Size(46, 13);
+            this.lbl_StreamReader.Size = new System.Drawing.Size(38, 13);
             this.lbl_StreamReader.TabIndex = 8;
-            this.lbl_StreamReader.Text = "Pending";
+            this.lbl_StreamReader.Text = "Ready";
             // 
             // Panel_ReadLogs
             // 
