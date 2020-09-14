@@ -41,6 +41,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.Panel_Phone = new System.Windows.Forms.Panel();
+            this.button25 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
@@ -60,6 +61,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button22 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
+            this.button26 = new System.Windows.Forms.Button();
             this.Panel_OTA.SuspendLayout();
             this.Panel_Phone.SuspendLayout();
             this.Panel_OOR.SuspendLayout();
@@ -70,6 +72,7 @@
             // 
             // Panel_OTA
             // 
+            this.Panel_OTA.Controls.Add(this.button26);
             this.Panel_OTA.Controls.Add(this.button24);
             this.Panel_OTA.Controls.Add(this.button23);
             this.Panel_OTA.Controls.Add(this.button7);
@@ -80,7 +83,7 @@
             this.Panel_OTA.Controls.Add(this.btn_OTA1);
             this.Panel_OTA.Location = new System.Drawing.Point(16, 14);
             this.Panel_OTA.Name = "Panel_OTA";
-            this.Panel_OTA.Size = new System.Drawing.Size(151, 359);
+            this.Panel_OTA.Size = new System.Drawing.Size(151, 399);
             this.Panel_OTA.TabIndex = 0;
             // 
             // button24
@@ -179,20 +182,31 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(144, 39);
             this.button5.TabIndex = 6;
-            this.button5.Text = "$bt dump profile_status";
+            this.button5.Text = "bt dump profile_status[5]";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.btn_click);
             // 
             // Panel_Phone
             // 
+            this.Panel_Phone.Controls.Add(this.button25);
             this.Panel_Phone.Controls.Add(this.button8);
             this.Panel_Phone.Controls.Add(this.button9);
             this.Panel_Phone.Controls.Add(this.button10);
             this.Panel_Phone.Controls.Add(this.button13);
             this.Panel_Phone.Location = new System.Drawing.Point(189, 14);
             this.Panel_Phone.Name = "Panel_Phone";
-            this.Panel_Phone.Size = new System.Drawing.Size(152, 184);
+            this.Panel_Phone.Size = new System.Drawing.Size(152, 219);
             this.Panel_Phone.TabIndex = 1;
+            // 
+            // button25
+            // 
+            this.button25.Location = new System.Drawing.Point(3, 177);
+            this.button25.Name = "button25";
+            this.button25.Size = new System.Drawing.Size(144, 39);
+            this.button25.TabIndex = 6;
+            this.button25.Text = "GetCentralNotificationAttributes[9]";
+            this.button25.UseVisualStyleBackColor = true;
+            this.button25.Click += new System.EventHandler(this.btn_click);
             // 
             // button8
             // 
@@ -210,7 +224,7 @@
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(144, 39);
             this.button9.TabIndex = 5;
-            this.button9.Text = "Number";
+            this.button9.Text = "AlexaMobileiOS";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.btn_click);
             // 
@@ -341,7 +355,7 @@
             this.panel_cmd.Controls.Add(this.button20);
             this.panel_cmd.Controls.Add(this.button6);
             this.panel_cmd.Controls.Add(this.button5);
-            this.panel_cmd.Location = new System.Drawing.Point(189, 205);
+            this.panel_cmd.Location = new System.Drawing.Point(189, 239);
             this.panel_cmd.Name = "panel_cmd";
             this.panel_cmd.Size = new System.Drawing.Size(152, 134);
             this.panel_cmd.TabIndex = 4;
@@ -359,7 +373,7 @@
             // 
             this.panel1.Controls.Add(this.button22);
             this.panel1.Controls.Add(this.button21);
-            this.panel1.Location = new System.Drawing.Point(192, 345);
+            this.panel1.Location = new System.Drawing.Point(192, 376);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(151, 104);
             this.panel1.TabIndex = 5;
@@ -382,6 +396,16 @@
             this.button21.TabIndex = 2;
             this.button21.Text = "Errors";
             this.button21.UseVisualStyleBackColor = true;
+            // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(3, 354);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(144, 39);
+            this.button26.TabIndex = 8;
+            this.button26.Text = "Disconnected";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.btn_click);
             // 
             // KW_Ref
             // 
@@ -444,5 +468,7 @@
         private System.Windows.Forms.Button button21;
         private System.Windows.Forms.Button button24;
         private System.Windows.Forms.Button button23;
+        private System.Windows.Forms.Button button25;
+        private System.Windows.Forms.Button button26;
     }
 }
