@@ -81,6 +81,7 @@ namespace Read_logs
             FileStream FS = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);              
             long filesize = FS.Length / 1024;
             txt_filesize.Text = filesize.ToString() + " KB";
+            FS.Dispose();
         }
         
         private void CreateTags(string searchText)
@@ -182,8 +183,6 @@ namespace Read_logs
                         reader.BaseStream.Seek(ReaderPOS, SeekOrigin.End);
                         txt_ReadLogs.AppendText("****************" + "\r\n");
                         TB.AppendText("****************" + "\r\n");
-                        stream.Close();
-                        reader.Close();
                         break;
                     }
                         ReaderPOS++;
@@ -291,38 +290,36 @@ namespace Read_logs
                                         txt_ReadLogs.AppendText(line + "\r\n");
                                         TB.AppendText(line + "\r\n");
                                         retReaderLinePOS = GetActualPosition(reader);
-                                        FileStream stream2 = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                                        StreamReader reader2 = new StreamReader(stream2); 
-                                        while ((kw_line = await reader.ReadLineAsync()) != null)
-                                        {
-                                            try
+                                        using (FileStream stream2 = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                                        using (StreamReader reader2 = new StreamReader(stream2))
+                                            while ((kw_line = await reader.ReadLineAsync()) != null)
                                             {
-                                                reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
-                                                txt_ReadLogs.AppendText(kw_line + "\r\n");
-                                                TB.AppendText(kw_line + "\r\n");
-                                                if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                                try
                                                 {
-                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
-                                                    txt_ReadLogs.AppendText("****************" + "\r\n");
-                                                    TB.AppendText("****************" + "\r\n");
-                                                    stream2.Close();
-                                                    reader2.Close();
+                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
+                                                    txt_ReadLogs.AppendText(kw_line + "\r\n");
+                                                    TB.AppendText(kw_line + "\r\n");
+                                                    if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                                    {
+                                                        reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
+                                                        txt_ReadLogs.AppendText("****************" + "\r\n");
+                                                        TB.AppendText("****************" + "\r\n");
+                                                        break;
+                                                    }
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                }
+                                                #region Stop
+                                                if (_GlobalVar.loopthis == false)
+                                                {
+                                                    lbl_StreamReader.Text = "Close";
+                                                    lbl_StreamReader.ForeColor = Color.Red;
                                                     break;
                                                 }
+                                                #endregion
                                             }
-                                            catch(Exception ex)
-                                            {
-                                                MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                            }
-                                            #region Stop
-                                            if (_GlobalVar.loopthis == false)
-                                            {
-                                                lbl_StreamReader.Text = "Close";
-                                                lbl_StreamReader.ForeColor = Color.Red;
-                                                break;
-                                            }
-                                            #endregion
-                                        }
                                     }
                                 }
                             }
@@ -347,17 +344,6 @@ namespace Read_logs
 
                 if (_GlobalVar.loopthis == false)
                 {
-                    stream.Close();
-                    reader.Close();
-
-                    //must run these steps so file will no longer be in use
-                    //txt_Infile.Text = "";
-                    //RemoveReadLogsControls();
-                    //Remove_Panel_Tags();
-                    //txt_ReadLogs.Text = "";
-                    //_GlobalVar.btn_press = false;
-                    //finish steps
-
                     lbl_StreamReader.Text = "Close";
                     lbl_StreamReader.ForeColor = Color.Red;
                 }
@@ -410,15 +396,6 @@ namespace Read_logs
 
                 if (_GlobalVar.loopthis == false)
                 {
-                    stream.Close();
-                    reader.Close();
-                        //must run these steps so file will no longer be in use
-                        //txt_Infile.Text = "";
-                        //RemoveReadLogsControls();
-                        //Remove_Panel_Tags();
-                        //txt_ReadLogs.Text = "";
-                        //_GlobalVar.btn_press = false;
-                        //finish steps
                     lbl_StreamReader.Text = "Close";
                     lbl_StreamReader.ForeColor = Color.Red;
                 }
