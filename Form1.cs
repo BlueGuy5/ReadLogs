@@ -78,10 +78,11 @@ namespace Read_logs
         private void Get_FileSize()
         {
             string file = txt_Infile.Text;
-            FileStream FS = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);              
-            long filesize = FS.Length / 1024;
-            txt_filesize.Text = filesize.ToString() + " KB";
-            FS.Dispose();
+            using (FileStream FS = File.Open(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                long filesize = FS.Length / 1024;
+                txt_filesize.Text = filesize.ToString() + " KB";
+            }
         }
         
         private void CreateTags(string searchText)

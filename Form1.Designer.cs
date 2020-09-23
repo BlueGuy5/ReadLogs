@@ -44,13 +44,13 @@
             this.txt_Ram = new System.Windows.Forms.TextBox();
             this.txt_filesize = new System.Windows.Forms.TextBox();
             this.txt_wait = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.btn_Browse = new System.Windows.Forms.Button();
             this.btn_Add = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.Panel_Tag.SuspendLayout();
             this.Panel_Main.SuspendLayout();
             this.Panel_ReadLogs.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txt_ReadLogs
@@ -158,7 +158,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 6);
+            this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 13);
             this.label1.TabIndex = 7;
@@ -168,7 +168,7 @@
             // 
             this.lbl_StreamReader.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_StreamReader.AutoSize = true;
-            this.lbl_StreamReader.Location = new System.Drawing.Point(102, 6);
+            this.lbl_StreamReader.Location = new System.Drawing.Point(96, 16);
             this.lbl_StreamReader.Name = "lbl_StreamReader";
             this.lbl_StreamReader.Size = new System.Drawing.Size(38, 13);
             this.lbl_StreamReader.TabIndex = 8;
@@ -188,25 +188,25 @@
             // txt_CPU
             // 
             this.txt_CPU.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txt_CPU.Location = new System.Drawing.Point(163, 5);
+            this.txt_CPU.Location = new System.Drawing.Point(250, 9);
             this.txt_CPU.Name = "txt_CPU";
             this.txt_CPU.ReadOnly = true;
-            this.txt_CPU.Size = new System.Drawing.Size(44, 20);
+            this.txt_CPU.Size = new System.Drawing.Size(83, 20);
             this.txt_CPU.TabIndex = 12;
             // 
             // txt_Ram
             // 
             this.txt_Ram.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txt_Ram.Location = new System.Drawing.Point(213, 5);
+            this.txt_Ram.Location = new System.Drawing.Point(339, 9);
             this.txt_Ram.Name = "txt_Ram";
             this.txt_Ram.ReadOnly = true;
-            this.txt_Ram.Size = new System.Drawing.Size(49, 20);
+            this.txt_Ram.Size = new System.Drawing.Size(68, 20);
             this.txt_Ram.TabIndex = 13;
             // 
             // txt_filesize
             // 
             this.txt_filesize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txt_filesize.Location = new System.Drawing.Point(268, 5);
+            this.txt_filesize.Location = new System.Drawing.Point(413, 9);
             this.txt_filesize.Name = "txt_filesize";
             this.txt_filesize.ReadOnly = true;
             this.txt_filesize.Size = new System.Drawing.Size(49, 20);
@@ -215,25 +215,11 @@
             // txt_wait
             // 
             this.txt_wait.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.txt_wait.Location = new System.Drawing.Point(323, 5);
+            this.txt_wait.Location = new System.Drawing.Point(468, 9);
             this.txt_wait.Name = "txt_wait";
             this.txt_wait.Size = new System.Drawing.Size(26, 20);
             this.txt_wait.TabIndex = 16;
             this.txt_wait.Text = "1";
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.label1);
-            this.panel2.Controls.Add(this.txt_wait);
-            this.panel2.Controls.Add(this.lbl_StreamReader);
-            this.panel2.Controls.Add(this.txt_filesize);
-            this.panel2.Controls.Add(this.txt_CPU);
-            this.panel2.Controls.Add(this.txt_Ram);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 475);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(876, 28);
-            this.panel2.TabIndex = 17;
             // 
             // btn_Browse
             // 
@@ -265,6 +251,25 @@
             this.btn_Add.UseVisualStyleBackColor = false;
             this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.Black;
+            this.groupBox1.Controls.Add(this.txt_wait);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.txt_filesize);
+            this.groupBox1.Controls.Add(this.lbl_StreamReader);
+            this.groupBox1.Controls.Add(this.txt_Ram);
+            this.groupBox1.Controls.Add(this.txt_CPU);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBox1.ForeColor = System.Drawing.Color.GhostWhite;
+            this.groupBox1.Location = new System.Drawing.Point(0, 469);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(876, 34);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "FileStream";
+            // 
             // Form1
             // 
             this.AcceptButton = this.btn_Add;
@@ -272,9 +277,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(876, 503);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_Add);
             this.Controls.Add(this.btn_Browse);
-            this.Controls.Add(this.panel2);
             this.Controls.Add(this.btn_OpenFile);
             this.Controls.Add(this.btn_Start);
             this.Controls.Add(this.Panel_ReadLogs);
@@ -292,8 +297,8 @@
             this.Panel_Main.ResumeLayout(false);
             this.Panel_ReadLogs.ResumeLayout(false);
             this.Panel_ReadLogs.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -314,11 +319,11 @@
         private System.Windows.Forms.TextBox txt_filesize;
         private System.Windows.Forms.TextBox txt_wait;
         public System.Windows.Forms.TextBox txt_search;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btn_Browse;
         private System.Windows.Forms.Button tag_readlog;
         private System.Windows.Forms.Panel Panel_Main;
         private System.Windows.Forms.Button btn_Add;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 
