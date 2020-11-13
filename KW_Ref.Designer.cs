@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(KW_Ref));
             this.Panel_OTA = new System.Windows.Forms.Panel();
+            this.button26 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -61,7 +62,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button22 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
-            this.button26 = new System.Windows.Forms.Button();
             this.Panel_OTA.SuspendLayout();
             this.Panel_Phone.SuspendLayout();
             this.Panel_OOR.SuspendLayout();
@@ -85,6 +85,16 @@
             this.Panel_OTA.Name = "Panel_OTA";
             this.Panel_OTA.Size = new System.Drawing.Size(151, 399);
             this.Panel_OTA.TabIndex = 0;
+            // 
+            // button26
+            // 
+            this.button26.Location = new System.Drawing.Point(3, 354);
+            this.button26.Name = "button26";
+            this.button26.Size = new System.Drawing.Size(144, 39);
+            this.button26.TabIndex = 8;
+            this.button26.Text = "Disconnected";
+            this.button26.UseVisualStyleBackColor = true;
+            this.button26.Click += new System.EventHandler(this.btn_click);
             // 
             // button24
             // 
@@ -397,16 +407,6 @@
             this.button21.Text = "Errors";
             this.button21.UseVisualStyleBackColor = true;
             // 
-            // button26
-            // 
-            this.button26.Location = new System.Drawing.Point(3, 354);
-            this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(144, 39);
-            this.button26.TabIndex = 8;
-            this.button26.Text = "Disconnected";
-            this.button26.UseVisualStyleBackColor = true;
-            this.button26.Click += new System.EventHandler(this.btn_click);
-            // 
             // KW_Ref
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -423,7 +423,7 @@
             this.Name = "KW_Ref";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Reference";
+            this.Text = "Reference - Depreciated";
             this.Load += new System.EventHandler(this.KW_Ref_Load);
             this.Panel_OTA.ResumeLayout(false);
             this.Panel_Phone.ResumeLayout(false);
