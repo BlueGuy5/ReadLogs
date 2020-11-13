@@ -587,12 +587,19 @@ namespace Read_logs
                 MessageBox.Show(ex.Message, "btn_OpenFile_Click", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        KW_Ref_Redesign KWrefRedesign = new KW_Ref_Redesign();
         private void F1KeyPress(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.F1)
             {
                 KW_Ref KWref = new KW_Ref();
                 KWref.Show();
+            }
+            else if(e.KeyCode == Keys.F2)
+            {
+                //KW_Ref_Redesign KWrefRedesign = new KW_Ref_Redesign();
+                KWrefRedesign.Show();
+                KWrefRedesign.BringToFront();
             }
         }
         private void btn_Browse_Click(object sender, EventArgs e)
