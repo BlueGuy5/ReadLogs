@@ -85,7 +85,7 @@ namespace BTC
         }
         private void F1KeyPress(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F1)
+            if (e.KeyCode == Keys.F12)
             {
                 this.Dispose();
             }

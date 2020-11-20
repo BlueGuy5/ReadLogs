@@ -42,6 +42,7 @@ namespace Read_logs
         {
             //txt_search.Text = "(dsp_earcon) Attempting to start a new download of version,reconnect attempt";
             //txt_Infile.Text = @"C:\Users\williamyu\Desktop\Frames_Logs\";
+            this.Location = new Point(this.Location.X - 300, this.Location.Y);
             await Get_CPU_Usage();
             Get_Ram_Usage();
         }
@@ -356,10 +357,6 @@ namespace Read_logs
             _GlobalVar.tmpfile = txt_Infile.Text;
             _GlobalVar.loopthis = true;
             txt_ReadLogs.Text = "";
-            if (_GlobalVar.btn_press == false)
-            {
-                //code deleted
-            }
             txt_search.Text = "";
             using (FileStream stream = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(stream))
@@ -372,13 +369,14 @@ namespace Read_logs
                     {
                         txt_ReadLogs.AppendText(line + "\r\n");
                     }
+                    
                     if (_GlobalVar.loopthis == false)
                     {
                         lbl_StreamReader.Text = "Close";
                         lbl_StreamReader.ForeColor = Color.Red;
                         break;
                     }
-                    if (line != null)
+                    if (line != null) //Let us know that we are still getting new lines and this loop is alive
                     {
                         lbl_StreamReader.Text = "reading";
                         lbl_StreamReader.ForeColor = Color.Blue;
@@ -389,13 +387,13 @@ namespace Read_logs
                 Get_Ram_Usage();
                 Thread.Sleep(int.Parse(txt_wait.Text));
 
-                if (line == null)
+                if (line == null) //We are no longer getting new lines so we're now waiting.
                 {
                     lbl_StreamReader.Text = "pending";
                     lbl_StreamReader.ForeColor = Color.Green;
                 }
 
-                if (_GlobalVar.loopthis == false)
+                if (_GlobalVar.loopthis == false) //Connection is closed. We should not be getting anything.
                 {
                     lbl_StreamReader.Text = "Close";
                     lbl_StreamReader.ForeColor = Color.Red;
@@ -489,10 +487,6 @@ namespace Read_logs
                     btn_Browse.Enabled = false;
                     _GlobalVar.btn_press = false;
                     Get_FileSize();
-                    if (_GlobalVar.tmpfile != txt_Infile.Text)
-                    {
-                        //Clear all and start a new
-                    }
                     txt_ReadLogs.BringToFront();
                     txt_ReadLogs.Visible = true;
                     if (Panel_Tag.Controls.Count == 1 && txt_search.Text == string.Empty)
@@ -522,8 +516,7 @@ namespace Read_logs
                         RemoveReadLogsControls();
                         btn_Start.Text = "Stop";
                         await Log_Output();
-                    }
-                
+                    }              
                 }
                 else if(btn_Start.Text == "Stop")
                 {
@@ -559,17 +552,10 @@ namespace Read_logs
                             TB.Visible = false;
                         }
                     }
-                    //btn_Start.Text = "Stop";
-                    //await Log_Output();
                 }
                 _GlobalVar.RequestCurrentReaderPOS = true;
                 btn_Start.Text = "Stop";
-                await Log_Output();
-                //else if (Panel_Tag.Controls.Count >= 1)
-                //{    
-                //    btn_Start.Text = "Stop";                
-                //    await Log_Output();
-                //}               
+                await Log_Output();           
             }
             catch(Exception ex)
             {
@@ -590,14 +576,13 @@ namespace Read_logs
         KW_Ref_Redesign KWrefRedesign = new KW_Ref_Redesign();
         private void F1KeyPress(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.F1)
+            if(e.KeyCode == Keys.F12)
             {
                 KW_Ref KWref = new KW_Ref();
                 KWref.Show();
             }
-            else if(e.KeyCode == Keys.F2)
+            else if(e.KeyCode == Keys.F1)
             {
-                //KW_Ref_Redesign KWrefRedesign = new KW_Ref_Redesign();
                 KWrefRedesign.Show();
                 KWrefRedesign.BringToFront();
             }
