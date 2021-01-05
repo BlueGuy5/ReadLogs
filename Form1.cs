@@ -598,6 +598,7 @@ namespace Read_logs
                 RemoveReadLogsControls();
                 Remove_Panel_Tags();
                 txt_ReadLogs.Text = "";
+                txt_ReadLogs.Refresh(); //properly disposed main?
                 _GlobalVar.btn_press = false;
             }
         }
