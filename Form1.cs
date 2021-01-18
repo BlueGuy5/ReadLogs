@@ -30,7 +30,7 @@ namespace Read_logs
             public string tmpfile { get; set; }
             public bool loopthis { get; set; }
             public bool btn_press { get; set; }
-            public TextBox txt_multilogs { get; set; }
+            public RichTextBox txt_multilogs { get; set; }
             public List<string> list_commands { get; set; }
             public bool RequestCurrentReaderPOS { get; set; }
             public long GetCurrentReaderPOS { get; set; }
@@ -88,8 +88,6 @@ namespace Read_logs
         
         private void CreateTags(string searchText)
         {
-            //GlobalVar _GlobalVar = new GlobalVar();
-
             Button btn_close_keyword = new Button();
             btn_close_keyword.Name = searchText;
             btn_close_keyword.Text = "X";
@@ -119,13 +117,13 @@ namespace Read_logs
             Panel_Keywords.Width = btn_close_keyword.Width + btn_SearchText.Width;
             Panel_Keywords.Height = Panel_Tag.Height;
             Panel_Keywords.BackColor = Color.AliceBlue;
-            Panel_Keywords.Left = Panel_Main.Width + Panel_Keywords.Width * (Panel_Tag.Controls.Count - 1);
+            Panel_Keywords.Left = Panel_Main.Width + Panel_Keywords.Width * (Panel_Tag.Controls.Count - 2);
 
             Panel_Keywords.Controls.Add(btn_close_keyword);
             Panel_Keywords.Controls.Add(btn_SearchText);
             Panel_Tag.Controls.Add(Panel_Keywords);
             
-            _GlobalVar.txt_multilogs = new TextBox();
+            _GlobalVar.txt_multilogs = new RichTextBox();
             _GlobalVar.txt_multilogs.Name = searchText;
             _GlobalVar.txt_multilogs.Dock = DockStyle.Fill;
             _GlobalVar.txt_multilogs.Visible = false;
@@ -134,16 +132,17 @@ namespace Read_logs
             _GlobalVar.txt_multilogs.Width = txt_ReadLogs.Width;
             _GlobalVar.txt_multilogs.Height = txt_ReadLogs.Height;
             _GlobalVar.txt_multilogs.Location = txt_ReadLogs.Location;
-            _GlobalVar.txt_multilogs.ScrollBars = ScrollBars.Vertical;
+            _GlobalVar.txt_multilogs.ScrollBars = RichTextBoxScrollBars.Vertical;
             _GlobalVar.txt_multilogs.ReadOnly = true;
             _GlobalVar.txt_multilogs.BackColor = Color.Black;
             _GlobalVar.txt_multilogs.ForeColor = Color.GhostWhite;
+            _GlobalVar.txt_multilogs.HideSelection = false;
             Panel_ReadLogs.Controls.Add(_GlobalVar.txt_multilogs);
         }
         private void RemoveReadLogsControls()
         {
             //must remove any existing controls before we proceed again.
-            foreach (TextBox TB in Panel_ReadLogs.Controls)
+            foreach (RichTextBox TB in Panel_ReadLogs.Controls)
             {
                 if (TB.Name != "txt_ReadLogs")
                 {
@@ -154,9 +153,9 @@ namespace Read_logs
         }
         private void Remove_Panel_Tags()
         {
-            while (Panel_Tag.Controls.Count > 1)
+            while (Panel_Tag.Controls.Count > 2)
             {
-                foreach (Panel _Panel in Panel_Tag.Controls)
+                foreach (Panel _Panel in Panel_Tag.Controls.OfType<Panel>())
                 {
                     if (_Panel.Name != "Panel_Main")
                     {
@@ -167,7 +166,7 @@ namespace Read_logs
             }
         }
 
-        private async Task CreateNewStreamReaderAsync(long ReaderPOS, TextBox TB, int linenum)
+        private async Task CreateNewStreamReaderAsync(long ReaderPOS, RichTextBox TB, int linenum)
         {
             string line;
             long ReaderPOSMAx = ReaderPOS + linenum;
@@ -249,7 +248,7 @@ namespace Read_logs
                         _GlobalVar.GetCurrentReaderPOS = stream.Length;
                         _GlobalVar.RequestCurrentReaderPOS = false;
                     }
-                    foreach (TextBox TB in Panel_ReadLogs.Controls)
+                    foreach (RichTextBox TB in Panel_ReadLogs.Controls)
                     {
                         foreach (string keyword in splitText)
                         {
@@ -281,7 +280,7 @@ namespace Read_logs
                     if (check_keywords == true)
                     {
                         kw_line = line;
-                        foreach (TextBox TB in Panel_ReadLogs.Controls)
+                        foreach (RichTextBox TB in Panel_ReadLogs.Controls)
                         {
                             foreach (string kw_keyword in List_command()) // change List_Sub_Keywords() to List_command
                             {
@@ -294,34 +293,34 @@ namespace Read_logs
                                         retReaderLinePOS = GetActualPosition(reader);
                                         using (FileStream stream2 = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                                         using (StreamReader reader2 = new StreamReader(stream2))
-                                            while ((kw_line = await reader.ReadLineAsync()) != null)
+                                        while ((kw_line = await reader.ReadLineAsync()) != null)
+                                        {
+                                            try
                                             {
-                                                try
+                                                reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
+                                                txt_ReadLogs.AppendText(kw_line + "\r\n");
+                                                TB.AppendText(kw_line + "\r\n");
+                                                if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
                                                 {
-                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
-                                                    txt_ReadLogs.AppendText(kw_line + "\r\n");
-                                                    TB.AppendText(kw_line + "\r\n");
-                                                    if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                                    {
-                                                        reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
-                                                        txt_ReadLogs.AppendText("****************" + "\r\n");
-                                                        TB.AppendText("****************" + "\r\n");
-                                                        break;
-                                                    }
-                                                }
-                                                catch (Exception ex)
-                                                {
-                                                    MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                                }
-                                                #region Stop
-                                                if (_GlobalVar.loopthis == false)
-                                                {
-                                                    lbl_StreamReader.Text = "Close";
-                                                    lbl_StreamReader.ForeColor = Color.Red;
+                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
+                                                    txt_ReadLogs.AppendText("****************" + "\r\n");
+                                                    TB.AppendText("****************" + "\r\n");
                                                     break;
                                                 }
-                                                #endregion
                                             }
+                                            catch (Exception ex)
+                                            {
+                                                MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            }
+                                            #region Stop
+                                            if (_GlobalVar.loopthis == false)
+                                            {
+                                                lbl_StreamReader.Text = "Close";
+                                                lbl_StreamReader.ForeColor = Color.Red;
+                                                break;
+                                            }
+                                            #endregion
+                                        }
                                     }
                                 }
                             }
@@ -403,7 +402,7 @@ namespace Read_logs
         private void btn_close_keyword_Click(object sender, EventArgs e)
         {
             Button _btn = (Button)sender;
-            foreach(Panel _panel in Panel_Tag.Controls)
+            foreach(Panel _panel in Panel_Tag.Controls.OfType<Panel>())
             {
                 if(_panel.Name == _btn.Name)
                 {
@@ -412,7 +411,7 @@ namespace Read_logs
                     break;
                 }
             }
-            foreach(TextBox TB in Panel_ReadLogs.Controls)
+            foreach(RichTextBox TB in Panel_ReadLogs.Controls)
             {
                 if(TB.Name == _btn.Name)
                 {
@@ -421,15 +420,15 @@ namespace Read_logs
                     break;
                 }
             }
-            if (Panel_Tag.Controls.Count == 1)
+            if (Panel_Tag.Controls.Count == 2)
             {
                 txt_ReadLogs.BringToFront();
                 txt_ReadLogs.Visible = true;
             }
-            else if (Panel_Tag.Controls.Count > 1)
+            else if (Panel_Tag.Controls.Count > 2)
             {
                 int PanelLeftPos = 0;
-                foreach (Panel _panel in Panel_Tag.Controls)
+                foreach (Panel _panel in Panel_Tag.Controls.OfType<Panel>())
                 {
                     _panel.Left = Panel_Main.Width + _panel.Width * (PanelLeftPos - 1);
                     PanelLeftPos++;
@@ -460,7 +459,7 @@ namespace Read_logs
         }
         private void HideTextBox(Button Btn_SearchName)
         {
-            foreach (TextBox TB in Panel_ReadLogs.Controls)
+            foreach (RichTextBox TB in Panel_ReadLogs.Controls)
             {
                 if (TB.Name == Btn_SearchName.Name)
                 {
@@ -489,7 +488,7 @@ namespace Read_logs
                     Get_FileSize();
                     txt_ReadLogs.BringToFront();
                     txt_ReadLogs.Visible = true;
-                    if (Panel_Tag.Controls.Count == 1 && txt_search.Text == string.Empty)
+                    if (Panel_Tag.Controls.Count == 2 && txt_search.Text == string.Empty)
                     {
                         var msg = MessageBox.Show("Read all lines?", "Think carefully", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                         if (msg == DialogResult.OK)
@@ -545,7 +544,7 @@ namespace Read_logs
                 _GlobalVar.btn_press = true;
                 if (Panel_Tag.Controls.Count > 1 && txt_search.Text == string.Empty)
                 {
-                    foreach (TextBox TB in Panel_ReadLogs.Controls)
+                    foreach (RichTextBox TB in Panel_ReadLogs.Controls)
                     {
                         if (TB.Name != "txt_ReadLogs")
                         {
@@ -598,7 +597,6 @@ namespace Read_logs
                 RemoveReadLogsControls();
                 Remove_Panel_Tags();
                 txt_ReadLogs.Text = "";
-                txt_ReadLogs.Refresh(); //properly disposed main?
                 _GlobalVar.btn_press = false;
             }
         }
