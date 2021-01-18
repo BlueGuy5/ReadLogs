@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.txt_ReadLogs = new System.Windows.Forms.TextBox();
             this.btn_Start = new System.Windows.Forms.Button();
             this.txt_search = new System.Windows.Forms.TextBox();
             this.txt_Infile = new System.Windows.Forms.TextBox();
             this.btn_OpenFile = new System.Windows.Forms.Button();
-            this.Panel_Tag = new System.Windows.Forms.Panel();
+            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.Panel_Main = new System.Windows.Forms.Panel();
             this.tag_readlog = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lbl_StreamReader = new System.Windows.Forms.Label();
             this.Panel_ReadLogs = new System.Windows.Forms.Panel();
+            this.txt_ReadLogs = new System.Windows.Forms.RichTextBox();
             this.txt_CPU = new System.Windows.Forms.TextBox();
             this.txt_Ram = new System.Windows.Forms.TextBox();
             this.txt_filesize = new System.Windows.Forms.TextBox();
@@ -47,25 +47,12 @@
             this.btn_Browse = new System.Windows.Forms.Button();
             this.btn_Add = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.Panel_Tag.SuspendLayout();
+            this.Panel_Tag = new System.Windows.Forms.Panel();
             this.Panel_Main.SuspendLayout();
             this.Panel_ReadLogs.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.Panel_Tag.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // txt_ReadLogs
-            // 
-            this.txt_ReadLogs.BackColor = System.Drawing.Color.Black;
-            this.txt_ReadLogs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txt_ReadLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txt_ReadLogs.ForeColor = System.Drawing.Color.GhostWhite;
-            this.txt_ReadLogs.Location = new System.Drawing.Point(0, 0);
-            this.txt_ReadLogs.Multiline = true;
-            this.txt_ReadLogs.Name = "txt_ReadLogs";
-            this.txt_ReadLogs.ReadOnly = true;
-            this.txt_ReadLogs.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txt_ReadLogs.Size = new System.Drawing.Size(852, 356);
-            this.txt_ReadLogs.TabIndex = 0;
             // 
             // btn_Start
             // 
@@ -121,22 +108,21 @@
             this.btn_OpenFile.UseVisualStyleBackColor = false;
             this.btn_OpenFile.Click += new System.EventHandler(this.btn_OpenFile_Click);
             // 
-            // Panel_Tag
+            // vScrollBar1
             // 
-            this.Panel_Tag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Panel_Tag.Controls.Add(this.Panel_Main);
-            this.Panel_Tag.Location = new System.Drawing.Point(12, 12);
-            this.Panel_Tag.Name = "Panel_Tag";
-            this.Panel_Tag.Size = new System.Drawing.Size(852, 31);
-            this.Panel_Tag.TabIndex = 6;
+            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.vScrollBar1.Location = new System.Drawing.Point(835, 0);
+            this.vScrollBar1.Name = "vScrollBar1";
+            this.vScrollBar1.Size = new System.Drawing.Size(17, 34);
+            this.vScrollBar1.TabIndex = 2;
             // 
             // Panel_Main
             // 
             this.Panel_Main.Controls.Add(this.tag_readlog);
-            this.Panel_Main.Location = new System.Drawing.Point(3, 0);
+            this.Panel_Main.Dock = System.Windows.Forms.DockStyle.Left;
+            this.Panel_Main.Location = new System.Drawing.Point(0, 0);
             this.Panel_Main.Name = "Panel_Main";
-            this.Panel_Main.Size = new System.Drawing.Size(50, 31);
+            this.Panel_Main.Size = new System.Drawing.Size(50, 34);
             this.Panel_Main.TabIndex = 1;
             // 
             // tag_readlog
@@ -148,7 +134,7 @@
             this.tag_readlog.ForeColor = System.Drawing.Color.DarkBlue;
             this.tag_readlog.Location = new System.Drawing.Point(0, 0);
             this.tag_readlog.Name = "tag_readlog";
-            this.tag_readlog.Size = new System.Drawing.Size(50, 31);
+            this.tag_readlog.Size = new System.Drawing.Size(50, 34);
             this.tag_readlog.TabIndex = 19;
             this.tag_readlog.Text = "Main";
             this.tag_readlog.UseVisualStyleBackColor = false;
@@ -184,6 +170,21 @@
             this.Panel_ReadLogs.Name = "Panel_ReadLogs";
             this.Panel_ReadLogs.Size = new System.Drawing.Size(852, 356);
             this.Panel_ReadLogs.TabIndex = 9;
+            // 
+            // txt_ReadLogs
+            // 
+            this.txt_ReadLogs.BackColor = System.Drawing.Color.Black;
+            this.txt_ReadLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txt_ReadLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_ReadLogs.ForeColor = System.Drawing.Color.GhostWhite;
+            this.txt_ReadLogs.HideSelection = false;
+            this.txt_ReadLogs.Location = new System.Drawing.Point(0, 0);
+            this.txt_ReadLogs.Name = "txt_ReadLogs";
+            this.txt_ReadLogs.ReadOnly = true;
+            this.txt_ReadLogs.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.txt_ReadLogs.Size = new System.Drawing.Size(852, 356);
+            this.txt_ReadLogs.TabIndex = 0;
+            this.txt_ReadLogs.Text = "";
             // 
             // txt_CPU
             // 
@@ -270,6 +271,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "FileStream";
             // 
+            // Panel_Tag
+            // 
+            this.Panel_Tag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_Tag.Controls.Add(this.vScrollBar1);
+            this.Panel_Tag.Controls.Add(this.Panel_Main);
+            this.Panel_Tag.Location = new System.Drawing.Point(12, 12);
+            this.Panel_Tag.Name = "Panel_Tag";
+            this.Panel_Tag.Size = new System.Drawing.Size(852, 34);
+            this.Panel_Tag.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AcceptButton = this.btn_Add;
@@ -293,24 +305,20 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Better than Cygwin";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.Panel_Tag.ResumeLayout(false);
             this.Panel_Main.ResumeLayout(false);
             this.Panel_ReadLogs.ResumeLayout(false);
-            this.Panel_ReadLogs.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.Panel_Tag.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox txt_ReadLogs;
         private System.Windows.Forms.Button btn_Start;
         private System.Windows.Forms.TextBox txt_Infile;
         private System.Windows.Forms.Button btn_OpenFile;
-        private System.Windows.Forms.Panel Panel_Tag;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lbl_StreamReader;
         private System.Windows.Forms.Panel Panel_ReadLogs;
@@ -324,6 +332,9 @@
         private System.Windows.Forms.Panel Panel_Main;
         private System.Windows.Forms.Button btn_Add;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RichTextBox txt_ReadLogs;
+        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.Panel Panel_Tag;
     }
 }
 
