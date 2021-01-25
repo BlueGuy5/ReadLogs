@@ -34,6 +34,7 @@ namespace Read_logs
             public List<string> list_commands { get; set; }
             public bool RequestCurrentReaderPOS { get; set; }
             public long GetCurrentReaderPOS { get; set; }
+            public int DebugMode { get; set; }
         }
         public GlobalVar _GlobalVar = new GlobalVar();
         List<string> list_commands = new List<string>();
@@ -177,8 +178,9 @@ namespace Read_logs
                 reader.BaseStream.Seek(ReaderPOS, SeekOrigin.Begin);
                 while ((line = await reader.ReadLineAsync()) != null)
                 {                 
-                    txt_ReadLogs.AppendText("\r" + line + "\r\n");
-                    TB.AppendText("\r" + line + "\r\n");                       
+                    txt_ReadLogs.AppendText("\r" + "[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                    TB.AppendText("\r" + line + "\r\n");
+                    DLog.Debug_Write("3", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "CreateNewStreamReaderAsync()", TB.Name, line);
                     if (ReaderPOS > ReaderPOSMAx)
                     {
                         reader.BaseStream.Seek(ReaderPOS, SeekOrigin.End);
@@ -194,7 +196,7 @@ namespace Read_logs
                 MessageBox.Show(ex.Message, "CreateNewStreamReader", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        Debug_Log DLog = new Debug_Log();
         private async Task Log_Output()
         {
             string line;
@@ -236,15 +238,17 @@ namespace Read_logs
                 }                           
             }
             txt_search.Text = "";
+            long TrackActualPOS = 0; //Used to track ActualPOS to make sure AcutalPOS is different before we read it. This is the script to output duplicate lines.
             using (FileStream stream = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(stream))
             while (_GlobalVar.loopthis == true)
             {
                 Thread.Sleep(int.Parse(txt_wait.Text));
                 while ((line = await reader.ReadLineAsync()) != null)
-                {
+                {                    
                     if (_GlobalVar.RequestCurrentReaderPOS == true)
                     {
+                         // Only need to run this if we create a new tab/instance during log read
                         _GlobalVar.GetCurrentReaderPOS = stream.Length;
                         _GlobalVar.RequestCurrentReaderPOS = false;
                     }
@@ -258,17 +262,20 @@ namespace Read_logs
                                 {
                                     if (keyword.Contains('[') && keyword.Contains(']'))
                                     {
-                                        txt_ReadLogs.AppendText(line + "\r\n");
+                                        txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
                                         TB.AppendText(line + "\r\n");
+                                        DLog.Debug_Write("2", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Log_Output()", keyword, line);
                                         int getNum = int.Parse(keyword.Substring(keyword.Length - 2, 1)) - 1;
                                         await CreateNewStreamReaderAsync(GetActualPosition(reader), TB, getNum);
                                     }
                                     else if (line.IndexOf(keyword,StringComparison.InvariantCultureIgnoreCase) >=0)
                                     {
                                         //Calling GetActualPosition each time may cause slowdown. This need to be tested.
-                                        if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader))
+                                        if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader) && TrackActualPOS < GetActualPosition(reader))
                                         {
-                                            txt_ReadLogs.AppendText(line + "\r\n");
+                                            txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                                            DLog.Debug_Write("1", "Current:" +_GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Log_Output()", keyword, line);
+                                            TrackActualPOS = GetActualPosition(reader);
                                         }
                                         TB.AppendText(line + "\r\n");
                                     }
@@ -366,7 +373,7 @@ namespace Read_logs
                 {
                     if (line.IndexOf(txt_search.Text, StringComparison.InvariantCultureIgnoreCase) >= 0)
                     {
-                        txt_ReadLogs.AppendText(line + "\r\n");
+                        txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
                     }
                     
                     if (_GlobalVar.loopthis == false)
@@ -585,6 +592,12 @@ namespace Read_logs
                 KWrefRedesign.Show();
                 KWrefRedesign.BringToFront();
             }
+            else if(e.KeyCode == Keys.F2)
+            {
+                DLog.Show();
+                DLog.BringToFront();
+                _GlobalVar.DebugMode = 1;
+            }
         }
         private void btn_Browse_Click(object sender, EventArgs e)
         {
@@ -598,6 +611,7 @@ namespace Read_logs
                 Remove_Panel_Tags();
                 txt_ReadLogs.Text = "";
                 _GlobalVar.btn_press = false;
+                DLog.txt_DebugLog.Text = string.Empty;
             }
         }
         private List<string> List_command()
