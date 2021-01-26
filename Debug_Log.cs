@@ -41,10 +41,9 @@ namespace BTC
         }
         private void F2KeyPress(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F2)
+            if (e.KeyCode == Keys.F12)
             {
                 _globalvar.DebugMode = 0;
-                //txt_DebugLog.Text = string.Empty;
                 this.Hide();
             }
         }
