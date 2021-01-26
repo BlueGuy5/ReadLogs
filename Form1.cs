@@ -582,17 +582,17 @@ namespace Read_logs
         KW_Ref_Redesign KWrefRedesign = new KW_Ref_Redesign();
         private void F1KeyPress(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.F12)
-            {
-                KW_Ref KWref = new KW_Ref();
-                KWref.Show();
-            }
-            else if(e.KeyCode == Keys.F1)
+            if(e.KeyCode == Keys.F1)
             {
                 KWrefRedesign.Show();
                 KWrefRedesign.BringToFront();
             }
-            else if(e.KeyCode == Keys.F2)
+            //else if(e.KeyCode == Keys.F2)
+            //{
+            //    KW_Ref KWref = new KW_Ref();
+            //    KWref.Show();
+            //}
+            else if(e.KeyCode == Keys.F12)
             {
                 DLog.Show();
                 DLog.BringToFront();

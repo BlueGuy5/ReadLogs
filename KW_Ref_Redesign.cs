@@ -29,8 +29,17 @@ namespace BTC
         {
             Form f = Application.OpenForms["Form1"];
             var ext_Form = ((Form1)f);
-            this.Height = ext_Form.Height;
-            this.Location = new Point(ext_Form.Location.X + ext_Form.Width - 20, ext_Form.Location.Y);
+            //this.Height = ext_Form.Height / 2;
+            if (ext_Form.WindowState == FormWindowState.Maximized)
+            {
+                this.Height = ext_Form.Height / 2;
+                this.Location = new Point((ext_Form.Location.X + ext_Form.Width) - this.Width, ext_Form.Location.Y);
+            }
+            else
+            {
+                this.Height = ext_Form.Height;
+                this.Location = new Point(ext_Form.Location.X + ext_Form.Width - 20, ext_Form.Location.Y);
+            }
             treeView1.ExpandAll();
             //treeView1.SelectedNode = null; //Cancel out selection that automatically gets selected by ExpandAll()
         }
