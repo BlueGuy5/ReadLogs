@@ -30,8 +30,8 @@
         {
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("(Select All)");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Attempting to start a new download of version");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("successfully wrote segment (component: dsp_fw");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("successfully wrote segment (component: mcu_bank");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("successfully wrote segment (component: mcu_bank");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("successfully wrote segment (component: dsp_fw");
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("successfully wrote segment (component: dsp_earcon");
             System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("successfully wrote segment (component: dsp_ww");
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Device Firmware Update");
@@ -105,10 +105,10 @@
             treeNode1.Text = "(Select All)";
             treeNode2.Name = "Node_Alexa_OTA_1";
             treeNode2.Text = "Attempting to start a new download of version";
-            treeNode3.Name = "Node_Alexa_OTA_2";
-            treeNode3.Text = "successfully wrote segment (component: dsp_fw";
-            treeNode4.Name = "Node_Alexa_OTA_3";
-            treeNode4.Text = "successfully wrote segment (component: mcu_bank";
+            treeNode3.Name = "Node_Alexa_OTA_3";
+            treeNode3.Text = "successfully wrote segment (component: mcu_bank";
+            treeNode4.Name = "Node_Alexa_OTA_2";
+            treeNode4.Text = "successfully wrote segment (component: dsp_fw";
             treeNode5.Name = "Node_Alexa_OTA_4";
             treeNode5.Text = "successfully wrote segment (component: dsp_earcon";
             treeNode6.Name = "Node_Alexa_OTA_5";
