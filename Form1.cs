@@ -258,9 +258,9 @@ namespace Read_logs
                         {
                             if (TB.Name == keyword)
                             {
-                                if (line.IndexOf(keyword.Replace(keyword.Substring(keyword.Length - 3), string.Empty), StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                if (keyword.Contains('[') && keyword.Contains(']'))
                                 {
-                                    if (keyword.Contains('[') && keyword.Contains(']'))
+                                    if (line.IndexOf(keyword.Replace(keyword.Substring(keyword.Length - 3), string.Empty), StringComparison.InvariantCultureIgnoreCase) >= 0)
                                     {
                                         txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
                                         TB.AppendText(line + "\r\n");
@@ -268,18 +268,18 @@ namespace Read_logs
                                         int getNum = int.Parse(keyword.Substring(keyword.Length - 2, 1)) - 1;
                                         await CreateNewStreamReaderAsync(GetActualPosition(reader), TB, getNum);
                                     }
-                                    else if (line.IndexOf(keyword,StringComparison.InvariantCultureIgnoreCase) >=0)
+                                }
+                                else if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                {
+                                    //Calling GetActualPosition each time may cause slowdown. This need to be tested.
+                                    if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader) && TrackActualPOS < GetActualPosition(reader))
                                     {
-                                        //Calling GetActualPosition each time may cause slowdown. This need to be tested.
-                                        if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader) && TrackActualPOS < GetActualPosition(reader))
-                                        {
-                                            txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
-                                            DLog.Debug_Write("1", "Current:" +_GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Log_Output()", keyword, line);
-                                            TrackActualPOS = GetActualPosition(reader);
-                                        }
-                                        TB.AppendText(line + "\r\n");
+                                        txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                                        DLog.Debug_Write("1", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Log_Output()", keyword, line);
+                                        TrackActualPOS = GetActualPosition(reader);
                                     }
-                                }                                                                
+                                    TB.AppendText(line + "\r\n");
+                                }
                             }
                         }
                     }
