@@ -183,7 +183,7 @@
             this.Name = "KW_Ref_Redesign";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Reference Redesigned";
+            this.Text = "BTC Auto Grep";
             this.Load += new System.EventHandler(this.KW_Ref_Redesign_Load);
             this.ResumeLayout(false);
 
