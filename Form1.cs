@@ -378,10 +378,11 @@ namespace Read_logs
                 //await Task.Run(() => Thread.Sleep(1));
                 while ((line = await reader.ReadLineAsync()) != null)
                 {
-                    if (line.IndexOf(txt_search.Text, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                    {
+                    //if (line.IndexOf(txt_search.Text, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    //{
                         txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
-                    }
+                        DLog.Debug_Write("2", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Blank_Log_Output()", "", line);
+                    //}
                     
                     if (_GlobalVar.keepalive == false)
                     {
@@ -412,6 +413,70 @@ namespace Read_logs
                     lbl_StreamReader.ForeColor = Color.Red;
                 }
             }         
+        }
+        private async Task Blank_Log_Output_End_Line()
+        {
+            string line;
+            _GlobalVar.tmpfile = groupBox_infile.Text;
+            _GlobalVar.keepalive = true;
+            txt_ReadLogs.Text = "";
+            txt_search.Text = "";
+            long TrackActualPOS = 0; //Used to track ActualPOS to make sure AcutalPOS is different before we read it. This is the script to output duplicate lines.
+            btn_Start.Text = "Stop";
+            using (FileStream stream = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (StreamReader reader = new StreamReader(stream))
+            while (_GlobalVar.keepalive == true)
+            {
+                //await Task.Run(() => Thread.Sleep(1));
+                while ((line = await reader.ReadLineAsync()) != null)
+                {
+                    if (_GlobalVar.RequestCurrentReaderPOS == true)
+                    {
+                        // Only need to run this if we create a new tab/instance during log read
+                        _GlobalVar.GetCurrentReaderPOS = stream.Length;
+                        _GlobalVar.RequestCurrentReaderPOS = false;
+
+                    }
+                    //if (line.IndexOf(txt_search.Text, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                    //{
+                        //Calling GetActualPosition each time may cause slowdown. This need to be tested.
+                        if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader) && TrackActualPOS < GetActualPosition(reader))
+                        {
+                            txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line.Trim() + "\r\n");
+                            DLog.Debug_Write("1", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Blank_Log_Output_End_Line()", "", line);
+                            TrackActualPOS = GetActualPosition(reader);
+                        }
+                    //}
+
+                    if (_GlobalVar.keepalive == false)
+                    {
+                        lbl_StreamReader.Text = "Close";
+                        lbl_StreamReader.ForeColor = Color.Red;
+                        break;
+                    }
+                    if (line != null) //Let us know that we are still getting new lines and this loop is alive
+                    {
+                        lbl_StreamReader.Text = "reading";
+                        lbl_StreamReader.ForeColor = Color.Blue;
+                    }
+                    //Get_FileSize(); //Do not run Get_FileSize() here or it will slow down when reading lines
+                    await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will note freeze/lag while reading lines
+                }
+                Get_FileSize();
+                await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will not run full cpu while idle
+
+                if (line == null) //We are no longer getting new lines so we're now waiting.
+                {
+                    lbl_StreamReader.Text = "idle";
+                    lbl_StreamReader.ForeColor = Color.Green;
+                }
+
+                if (_GlobalVar.keepalive == false) //Connection is closed. We should not be getting anything.
+                {
+                    lbl_StreamReader.Text = "Close";
+                    lbl_StreamReader.ForeColor = Color.Red;
+                }
+            }
         }
         private void btn_close_keyword_Click(object sender, EventArgs e)
         {
@@ -542,9 +607,15 @@ namespace Read_logs
         {
             try
             {
-                if (txt_search.Text == string.Empty)
+                if (Panel_Tag.Controls.Count == 2 && txt_search.Text == string.Empty)
                 {
-                    MessageBox.Show("empty field", "btn_add_click", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    var msg = MessageBox.Show("Read all new lines?", "Hey", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                    if (msg == DialogResult.OK)
+                    {
+                        //MessageBox.Show("empty field", "btn_add_click", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        _GlobalVar.RequestCurrentReaderPOS = true;
+                        await Blank_Log_Output_End_Line();
+                    }
                 }
                 else
                 {
