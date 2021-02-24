@@ -45,6 +45,9 @@
             this.lbl_filesize = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Panel_Tag = new System.Windows.Forms.Panel();
+            this.txt_getcurrentPOS = new System.Windows.Forms.TextBox();
+            this.txt_actualPOS = new System.Windows.Forms.TextBox();
+            this.txt_TrackPOS = new System.Windows.Forms.TextBox();
             this.Panel_Main.SuspendLayout();
             this.Panel_ReadLogs.SuspendLayout();
             this.groupBox_infile.SuspendLayout();
@@ -206,6 +209,9 @@
             // groupBox_infile
             // 
             this.groupBox_infile.BackColor = System.Drawing.Color.Black;
+            this.groupBox_infile.Controls.Add(this.txt_TrackPOS);
+            this.groupBox_infile.Controls.Add(this.txt_actualPOS);
+            this.groupBox_infile.Controls.Add(this.txt_getcurrentPOS);
             this.groupBox_infile.Controls.Add(this.lbl_filesize);
             this.groupBox_infile.Controls.Add(this.label2);
             this.groupBox_infile.Controls.Add(this.label1);
@@ -257,6 +263,30 @@
             this.Panel_Tag.Size = new System.Drawing.Size(852, 34);
             this.Panel_Tag.TabIndex = 6;
             // 
+            // txt_getcurrentPOS
+            // 
+            this.txt_getcurrentPOS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_getcurrentPOS.Location = new System.Drawing.Point(652, 12);
+            this.txt_getcurrentPOS.Name = "txt_getcurrentPOS";
+            this.txt_getcurrentPOS.Size = new System.Drawing.Size(66, 20);
+            this.txt_getcurrentPOS.TabIndex = 22;
+            // 
+            // txt_actualPOS
+            // 
+            this.txt_actualPOS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_actualPOS.Location = new System.Drawing.Point(724, 12);
+            this.txt_actualPOS.Name = "txt_actualPOS";
+            this.txt_actualPOS.Size = new System.Drawing.Size(66, 20);
+            this.txt_actualPOS.TabIndex = 23;
+            // 
+            // txt_TrackPOS
+            // 
+            this.txt_TrackPOS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txt_TrackPOS.Location = new System.Drawing.Point(796, 12);
+            this.txt_TrackPOS.Name = "txt_TrackPOS";
+            this.txt_TrackPOS.Size = new System.Drawing.Size(66, 20);
+            this.txt_TrackPOS.TabIndex = 24;
+            // 
             // Form1
             // 
             this.AcceptButton = this.btn_Add;
@@ -300,6 +330,9 @@
         private System.Windows.Forms.Panel Panel_Tag;
         private System.Windows.Forms.Label lbl_filesize;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txt_actualPOS;
+        private System.Windows.Forms.TextBox txt_getcurrentPOS;
+        private System.Windows.Forms.TextBox txt_TrackPOS;
     }
 }
 
