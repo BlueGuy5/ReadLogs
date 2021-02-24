@@ -425,20 +425,22 @@ namespace Read_logs
             btn_Start.Text = "Stop";
             using (FileStream stream = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(stream))
-            while (_GlobalVar.keepalive == true)
             {
-                //await Task.Run(() => Thread.Sleep(1));
-                while ((line = await reader.ReadLineAsync()) != null)
+                line = await reader.ReadToEndAsync();
+                while (_GlobalVar.keepalive == true)
                 {
-                    if (_GlobalVar.RequestCurrentReaderPOS == true)
+                    //await Task.Run(() => Thread.Sleep(1));
+                    while ((line = await reader.ReadLineAsync()) != null)
                     {
-                        // Only need to run this if we create a new tab/instance during log read
-                        _GlobalVar.GetCurrentReaderPOS = stream.Length;
-                        _GlobalVar.RequestCurrentReaderPOS = false;
+                        if (_GlobalVar.RequestCurrentReaderPOS == true)
+                        {
+                            // Only need to run this if we create a new tab/instance during log read
+                            _GlobalVar.GetCurrentReaderPOS = stream.Length;
+                            _GlobalVar.RequestCurrentReaderPOS = false;
 
-                    }
-                    //if (line.IndexOf(txt_search.Text, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                    //{
+                        }
+                        //if (line.IndexOf(txt_search.Text, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                        //{
                         //Calling GetActualPosition each time may cause slowdown. This need to be tested.
                         if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader) && TrackActualPOS < GetActualPosition(reader))
                         {
@@ -446,35 +448,39 @@ namespace Read_logs
                             DLog.Debug_Write("1", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Blank_Log_Output_End_Line()", "", line);
                             TrackActualPOS = GetActualPosition(reader);
                         }
-                    //}
+                        //}
 
-                    if (_GlobalVar.keepalive == false)
+                        if (_GlobalVar.keepalive == false)
+                        {
+                            lbl_StreamReader.Text = "Close";
+                            lbl_StreamReader.ForeColor = Color.Red;
+                            break;
+                        }
+                        if (line != null) //Let us know that we are still getting new lines and this loop is alive
+                        {
+                            lbl_StreamReader.Text = "reading";
+                            lbl_StreamReader.ForeColor = Color.Blue;
+                        }
+                        //Get_FileSize(); //Do not run Get_FileSize() here or it will slow down when reading lines
+                        txt_getcurrentPOS.Text = _GlobalVar.GetCurrentReaderPOS.ToString();
+                        txt_actualPOS.Text = GetActualPosition(reader).ToString();
+                        txt_TrackPOS.Text = TrackActualPOS.ToString();
+                        await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will note freeze/lag while reading lines
+                    }
+                    Get_FileSize();
+                    await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will not run full cpu while idle
+
+                    if (line == null) //We are no longer getting new lines so we're now waiting.
+                    {
+                        lbl_StreamReader.Text = "idle";
+                        lbl_StreamReader.ForeColor = Color.Green;
+                    }
+
+                    if (_GlobalVar.keepalive == false) //Connection is closed. We should not be getting anything.
                     {
                         lbl_StreamReader.Text = "Close";
                         lbl_StreamReader.ForeColor = Color.Red;
-                        break;
                     }
-                    if (line != null) //Let us know that we are still getting new lines and this loop is alive
-                    {
-                        lbl_StreamReader.Text = "reading";
-                        lbl_StreamReader.ForeColor = Color.Blue;
-                    }
-                    //Get_FileSize(); //Do not run Get_FileSize() here or it will slow down when reading lines
-                    await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will note freeze/lag while reading lines
-                }
-                Get_FileSize();
-                await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will not run full cpu while idle
-
-                if (line == null) //We are no longer getting new lines so we're now waiting.
-                {
-                    lbl_StreamReader.Text = "idle";
-                    lbl_StreamReader.ForeColor = Color.Green;
-                }
-
-                if (_GlobalVar.keepalive == false) //Connection is closed. We should not be getting anything.
-                {
-                    lbl_StreamReader.Text = "Close";
-                    lbl_StreamReader.ForeColor = Color.Red;
                 }
             }
         }
