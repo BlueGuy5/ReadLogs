@@ -204,7 +204,7 @@ namespace Read_logs
             }
         }
         Debug_Log DLog = new Debug_Log();
-        private async Task Log_Output()
+        private async Task Log_Output(bool ReadToEnd)
         {
             string line;
             string kw_line;
@@ -249,119 +249,126 @@ namespace Read_logs
             long TrackActualPOS = 0; //Used to track ActualPOS to make sure AcutalPOS is different before we read it. This is the script to output duplicate lines.
             using (FileStream stream = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (StreamReader reader = new StreamReader(stream))
-            while (_GlobalVar.keepalive == true)
             {
-                //await Task.Run(() => Thread.Sleep(1));
-                while ((line = await reader.ReadLineAsync()) != null)
-                {                    
-                    if (_GlobalVar.RequestCurrentReaderPOS == true)
+                if(ReadToEnd == true)
+                {
+                    line = await reader.ReadToEndAsync();
+                }
+                while (_GlobalVar.keepalive == true)
+                {
+                    //await Task.Run(() => Thread.Sleep(1));
+                    while ((line = await reader.ReadLineAsync()) != null)
                     {
-                         // Only need to run this if we create a new tab/instance during log read
-                        _GlobalVar.GetCurrentReaderPOS = stream.Length;
-                        _GlobalVar.RequestCurrentReaderPOS = false;
-                    }
-                    foreach (RichTextBox TB in Panel_ReadLogs.Controls)
-                    {
-                        foreach (string keyword in splitText)
+                        if (_GlobalVar.RequestCurrentReaderPOS == true)
                         {
-                            if (TB.Name == keyword)
+                            // Only need to run this if we create a new tab/instance during log read
+                            _GlobalVar.GetCurrentReaderPOS = stream.Length;
+                            _GlobalVar.RequestCurrentReaderPOS = false;
+                        }
+                        foreach (RichTextBox TB in Panel_ReadLogs.Controls)
+                        {
+                            foreach (string keyword in splitText)
                             {
-                                if (keyword.Contains('[') && keyword.Contains(']'))
+                                if (TB.Name == keyword)
                                 {
-                                    if (line.IndexOf(keyword.Replace(keyword.Substring(keyword.Length - 3), string.Empty), StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                    if (keyword.Contains('[') && keyword.Contains(']'))
                                     {
-                                        txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                                        if (line.IndexOf(keyword.Replace(keyword.Substring(keyword.Length - 3), string.Empty), StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                        {
+                                            txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                                            TB.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                                            DLog.Debug_Write("2", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Log_Output()", keyword, line);
+                                            int getNum = int.Parse(keyword.Substring(keyword.Length - 2, 1)) - 1;
+                                            await CreateNewStreamReaderAsync(GetActualPosition(reader), TB, getNum);
+                                        }
+                                    }
+                                    else if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                    {
+                                        //Calling GetActualPosition each time may cause slowdown. This need to be tested.
+                                        if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader) && TrackActualPOS < GetActualPosition(reader))
+                                        {
+                                            txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                                            DLog.Debug_Write("1", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Log_Output()", keyword, line);
+                                            TrackActualPOS = GetActualPosition(reader);
+                                        }
                                         TB.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
-                                        DLog.Debug_Write("2", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Log_Output()", keyword, line);
-                                        int getNum = int.Parse(keyword.Substring(keyword.Length - 2, 1)) - 1;
-                                        await CreateNewStreamReaderAsync(GetActualPosition(reader), TB, getNum);
                                     }
-                                }
-                                else if (line.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                                {
-                                    //Calling GetActualPosition each time may cause slowdown. This need to be tested.
-                                    if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader) && TrackActualPOS < GetActualPosition(reader))
-                                    {
-                                        txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
-                                        DLog.Debug_Write("1", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Log_Output()", keyword, line);
-                                        TrackActualPOS = GetActualPosition(reader);
-                                    }
-                                    TB.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
                                 }
                             }
                         }
-                    }
-                    //Should only run this block of code if we are searching commands!
-                    if (check_keywords == true)
-                    {
-                        kw_line = line;
-                        foreach (RichTextBox TB in Panel_ReadLogs.Controls)
+                        //Should only run this block of code if we are searching commands!
+                        if (check_keywords == true)
                         {
-                            foreach (string kw_keyword in List_command()) // change List_Sub_Keywords() to List_command
+                            kw_line = line;
+                            foreach (RichTextBox TB in Panel_ReadLogs.Controls)
                             {
-                                if (TB.Name == kw_keyword)
+                                foreach (string kw_keyword in List_command()) // change List_Sub_Keywords() to List_command
                                 {
-                                    if (kw_line.IndexOf(kw_keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                    if (TB.Name == kw_keyword)
                                     {
-                                        txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
-                                        TB.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
-                                        retReaderLinePOS = GetActualPosition(reader);
-                                        using (FileStream stream2 = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                                        using (StreamReader reader2 = new StreamReader(stream2))
-                                        while ((kw_line = await reader.ReadLineAsync()) != null)
+                                        if (kw_line.IndexOf(kw_keyword, StringComparison.InvariantCultureIgnoreCase) >= 0)
                                         {
-                                            try
-                                            {
-                                                reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
-                                                txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + kw_line + "\r\n");
-                                                TB.AppendText("[" + GetActualPosition(reader).ToString() + "]" + kw_line + "\r\n");
-                                                if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                            txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                                            TB.AppendText("[" + GetActualPosition(reader).ToString() + "]" + line + "\r\n");
+                                            retReaderLinePOS = GetActualPosition(reader);
+                                            using (FileStream stream2 = File.Open(_GlobalVar.tmpfile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                                            using (StreamReader reader2 = new StreamReader(stream2))
+                                                while ((kw_line = await reader.ReadLineAsync()) != null)
                                                 {
-                                                    reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
-                                                    txt_ReadLogs.AppendText("****************" + "\r\n");
-                                                    TB.AppendText("****************" + "\r\n");
-                                                    break;
+                                                    try
+                                                    {
+                                                        reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.Begin);
+                                                        txt_ReadLogs.AppendText("[" + GetActualPosition(reader).ToString() + "]" + kw_line + "\r\n");
+                                                        TB.AppendText("[" + GetActualPosition(reader).ToString() + "]" + kw_line + "\r\n");
+                                                        if (kw_line.IndexOf("$", StringComparison.InvariantCultureIgnoreCase) >= 0)
+                                                        {
+                                                            reader2.BaseStream.Seek(retReaderLinePOS, SeekOrigin.End);
+                                                            txt_ReadLogs.AppendText("****************" + "\r\n");
+                                                            TB.AppendText("****************" + "\r\n");
+                                                            break;
+                                                        }
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                                    }
+                                                    #region Stop
+                                                    if (_GlobalVar.keepalive == false)
+                                                    {
+                                                        lbl_StreamReader.Text = "Close";
+                                                        lbl_StreamReader.ForeColor = Color.Red;
+                                                        break;
+                                                    }
+                                                    #endregion
                                                 }
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                MessageBox.Show(ex.Message, "Reader2", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                            }
-                                            #region Stop
-                                            if (_GlobalVar.keepalive == false)
-                                            {
-                                                lbl_StreamReader.Text = "Close";
-                                                lbl_StreamReader.ForeColor = Color.Red;
-                                                break;
-                                            }
-                                            #endregion
                                         }
                                     }
                                 }
                             }
                         }
+                        if (line != null)
+                        {
+                            lbl_StreamReader.Text = "reading";
+                            lbl_StreamReader.ForeColor = Color.Blue;
+                        }
+                        await Task.Run(() => Thread.Sleep(1));
                     }
-                    if (line != null)
+                    Get_FileSize();
+                    await Task.Run(() => Thread.Sleep(1));
+
+                    if (line == null)
                     {
-                        lbl_StreamReader.Text = "reading";
-                        lbl_StreamReader.ForeColor = Color.Blue;
+                        lbl_StreamReader.Text = "idle";
+                        lbl_StreamReader.ForeColor = Color.Green;
+                    }
+
+                    if (_GlobalVar.keepalive == false)
+                    {
+                        lbl_StreamReader.Text = "Close";
+                        lbl_StreamReader.ForeColor = Color.Red;
                     }
                 }
-                Get_FileSize();
-                await Task.Run(() => Thread.Sleep(1));
-
-                if (line == null)
-                {
-                    lbl_StreamReader.Text = "idle";
-                    lbl_StreamReader.ForeColor = Color.Green;
-                }
-
-                if (_GlobalVar.keepalive == false)
-                {
-                    lbl_StreamReader.Text = "Close";
-                    lbl_StreamReader.ForeColor = Color.Red;
-                }
-            }               
+            }
         }
         private async Task Blank_Log_Output()
         {
@@ -588,12 +595,12 @@ namespace Read_logs
                     {
                         RemoveReadLogsControls();
                         txt_search.Text = txt_search.Text.Substring(0, txt_search.Text.Length - 1);
-                        await Log_Output();
+                        await Log_Output(false);
                     }
                     else
                     {
                         RemoveReadLogsControls();
-                        await Log_Output();
+                        await Log_Output(false);
                     }              
                 }
                 else if(btn_Start.Text == "Stop")
@@ -642,7 +649,7 @@ namespace Read_logs
                         }
                     }
                     _GlobalVar.RequestCurrentReaderPOS = true;
-                    await Log_Output();
+                    await Log_Output(true);
                 }
             }
             catch(Exception ex)
