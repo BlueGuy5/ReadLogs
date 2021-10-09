@@ -42,12 +42,11 @@
             this.btn_Browse = new System.Windows.Forms.Button();
             this.btn_Add = new System.Windows.Forms.Button();
             this.groupBox_infile = new System.Windows.Forms.GroupBox();
+            this.btn_F1 = new System.Windows.Forms.Button();
             this.lbl_filesize = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Panel_Tag = new System.Windows.Forms.Panel();
-            this.txt_getcurrentPOS = new System.Windows.Forms.TextBox();
-            this.txt_actualPOS = new System.Windows.Forms.TextBox();
-            this.txt_TrackPOS = new System.Windows.Forms.TextBox();
+            this.chk_debuglines = new System.Windows.Forms.CheckBox();
             this.Panel_Main.SuspendLayout();
             this.Panel_ReadLogs.SuspendLayout();
             this.groupBox_infile.SuspendLayout();
@@ -209,9 +208,8 @@
             // groupBox_infile
             // 
             this.groupBox_infile.BackColor = System.Drawing.Color.Black;
-            this.groupBox_infile.Controls.Add(this.txt_TrackPOS);
-            this.groupBox_infile.Controls.Add(this.txt_actualPOS);
-            this.groupBox_infile.Controls.Add(this.txt_getcurrentPOS);
+            this.groupBox_infile.Controls.Add(this.chk_debuglines);
+            this.groupBox_infile.Controls.Add(this.btn_F1);
             this.groupBox_infile.Controls.Add(this.lbl_filesize);
             this.groupBox_infile.Controls.Add(this.label2);
             this.groupBox_infile.Controls.Add(this.label1);
@@ -230,6 +228,21 @@
             this.groupBox_infile.TabIndex = 1;
             this.groupBox_infile.TabStop = false;
             this.groupBox_infile.Text = "FileStream";
+            // 
+            // btn_F1
+            // 
+            this.btn_F1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_F1.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_F1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_F1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_F1.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btn_F1.Location = new System.Drawing.Point(822, 15);
+            this.btn_F1.Name = "btn_F1";
+            this.btn_F1.Size = new System.Drawing.Size(40, 26);
+            this.btn_F1.TabIndex = 22;
+            this.btn_F1.Text = "F1";
+            this.btn_F1.UseVisualStyleBackColor = false;
+            this.btn_F1.Click += new System.EventHandler(this.btn_F1_Click);
             // 
             // lbl_filesize
             // 
@@ -263,29 +276,21 @@
             this.Panel_Tag.Size = new System.Drawing.Size(852, 34);
             this.Panel_Tag.TabIndex = 6;
             // 
-            // txt_getcurrentPOS
+            // chk_debuglines
             // 
-            this.txt_getcurrentPOS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_getcurrentPOS.Location = new System.Drawing.Point(652, 12);
-            this.txt_getcurrentPOS.Name = "txt_getcurrentPOS";
-            this.txt_getcurrentPOS.Size = new System.Drawing.Size(66, 20);
-            this.txt_getcurrentPOS.TabIndex = 22;
-            // 
-            // txt_actualPOS
-            // 
-            this.txt_actualPOS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_actualPOS.Location = new System.Drawing.Point(724, 12);
-            this.txt_actualPOS.Name = "txt_actualPOS";
-            this.txt_actualPOS.Size = new System.Drawing.Size(66, 20);
-            this.txt_actualPOS.TabIndex = 23;
-            // 
-            // txt_TrackPOS
-            // 
-            this.txt_TrackPOS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txt_TrackPOS.Location = new System.Drawing.Point(796, 12);
-            this.txt_TrackPOS.Name = "txt_TrackPOS";
-            this.txt_TrackPOS.Size = new System.Drawing.Size(66, 20);
-            this.txt_TrackPOS.TabIndex = 24;
+            this.chk_debuglines.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.chk_debuglines.AutoSize = true;
+            this.chk_debuglines.BackColor = System.Drawing.Color.AliceBlue;
+            this.chk_debuglines.Checked = true;
+            this.chk_debuglines.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_debuglines.Enabled = false;
+            this.chk_debuglines.ForeColor = System.Drawing.Color.DarkBlue;
+            this.chk_debuglines.Location = new System.Drawing.Point(730, 20);
+            this.chk_debuglines.Name = "chk_debuglines";
+            this.chk_debuglines.Size = new System.Drawing.Size(86, 17);
+            this.chk_debuglines.TabIndex = 23;
+            this.chk_debuglines.Text = "Debug Lines";
+            this.chk_debuglines.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
@@ -330,9 +335,8 @@
         private System.Windows.Forms.Panel Panel_Tag;
         private System.Windows.Forms.Label lbl_filesize;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txt_actualPOS;
-        private System.Windows.Forms.TextBox txt_getcurrentPOS;
-        private System.Windows.Forms.TextBox txt_TrackPOS;
+        private System.Windows.Forms.Button btn_F1;
+        private System.Windows.Forms.CheckBox chk_debuglines;
     }
 }
 

@@ -91,17 +91,23 @@ namespace Read_logs
                 lbl_filesize.Text = filesize.ToString() + " KB";
             }
         }
-        
+
         private void CreateTags(string searchText)
         {
-            Button btn_close_keyword = new Button();
-            btn_close_keyword.Name = searchText;
-            btn_close_keyword.Text = "X";
-            btn_close_keyword.Width = 25;
-            btn_close_keyword.Height = Panel_Tag.Height;
-            btn_close_keyword.Cursor = Cursors.Hand;
-            btn_close_keyword.ForeColor = Color.Red;
-            btn_close_keyword.FlatStyle = FlatStyle.Popup;
+            Button btn_close_keyword = new Button()
+            {
+                Name = searchText,
+                //Text = "X",
+                BackgroundImageLayout = ImageLayout.Stretch,
+                BackgroundImage = BTC.Properties.Resources.X_pic,
+                Width = Panel_Tag.Height, //To make this a perfect square.
+                Height = Panel_Tag.Height,
+                Cursor = Cursors.Hand,
+                ForeColor = Color.Red,
+                FlatStyle = FlatStyle.Popup,               
+                //FlatAppearance.BorderColor = Color.Aqua,
+                //Click += new EventHandler(btn_close_keyword_Click)
+            };
             btn_close_keyword.FlatAppearance.BorderColor = Color.Aqua;
             btn_close_keyword.Click += new EventHandler(btn_close_keyword_Click);
 
@@ -348,23 +354,13 @@ namespace Read_logs
                                 }
                             }
                         }
-                        /*
-                        if (line != null)
-                        {
-                            lbl_StreamReader.Text = "reading";
-                            lbl_StreamReader.ForeColor = Color.Blue;
-                        }
-                        */
-                        //await Task.Run(() => Thread.Sleep(1)); //Do not add sleep here, otherwise, this will dramatically slow the script.
                     }
-                    //Get_FileSize();
                     await Task.Run(() => Thread.Sleep(1));
 
                     if (line == null)
                     {
                         lbl_StreamReader.Text = "idle";
                         lbl_StreamReader.ForeColor = Color.Green;
-                        //Get_FileSize();
                     }
 
                     if (_GlobalVar.keepalive == false)
@@ -387,7 +383,6 @@ namespace Read_logs
             using (StreamReader reader = new StreamReader(stream))
             while (_GlobalVar.keepalive == true)
             {
-                //await Task.Run(() => Thread.Sleep(1));
                 while ((line = await reader.ReadLineAsync()) != null)
                 {
                     lbl_StreamReader.Text = "reading";
@@ -401,17 +396,8 @@ namespace Read_logs
                         lbl_StreamReader.ForeColor = Color.Red;
                         break;
                     }
-                    /*
-                    if (line != null) //Let us know that we are still getting new lines and this loop is alive
-                    {
-                        lbl_StreamReader.Text = "reading";
-                        lbl_StreamReader.ForeColor = Color.Blue;
-                    }
-                    */
-                    //Get_FileSize(); //Do not run Get_FileSize() here or it will slow down when reading lines
                     await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will note freeze/lag while reading lines
                 }
-                //Get_FileSize();
                 await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will not run full cpu while idle
                    
                 if (line == null) //We are no longer getting new lines so we're now waiting.
@@ -442,7 +428,6 @@ namespace Read_logs
                 line = await reader.ReadToEndAsync();
                 while (_GlobalVar.keepalive == true)
                 {
-                    //await Task.Run(() => Thread.Sleep(1));
                     while ((line = await reader.ReadLineAsync()) != null)
                     {
                         lbl_StreamReader.Text = "reading";
@@ -454,8 +439,6 @@ namespace Read_logs
                             _GlobalVar.RequestCurrentReaderPOS = false;
 
                         }
-                        //if (line.IndexOf(txt_search.Text, StringComparison.InvariantCultureIgnoreCase) >= 0)
-                        //{
                         //Calling GetActualPosition each time may cause slowdown. This need to be tested.
                         if (_GlobalVar.GetCurrentReaderPOS < GetActualPosition(reader) && TrackActualPOS < GetActualPosition(reader))
                         {
@@ -463,7 +446,6 @@ namespace Read_logs
                             DLog.Debug_Write("1", "Current:" + _GlobalVar.GetCurrentReaderPOS.ToString(), "Actual" + GetActualPosition(reader).ToString(), "Blank_Log_Output_End_Line()", "", line);
                             TrackActualPOS = GetActualPosition(reader);
                         }
-                        //}
 
                         if (_GlobalVar.keepalive == false)
                         {
@@ -471,20 +453,9 @@ namespace Read_logs
                             lbl_StreamReader.ForeColor = Color.Red;
                             break;
                         }
-                        /*
-                        if (line != null) //Let us know that we are still getting new lines and this loop is alive
-                        {
-                            lbl_StreamReader.Text = "reading";
-                            lbl_StreamReader.ForeColor = Color.Blue;
-                        }
-                        */
-                        //Get_FileSize(); //Do not run Get_FileSize() here or it will slow down when reading lines
-                        txt_getcurrentPOS.Text = _GlobalVar.GetCurrentReaderPOS.ToString();
-                        txt_actualPOS.Text = GetActualPosition(reader).ToString();
-                        txt_TrackPOS.Text = TrackActualPOS.ToString();
+
                         await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will note freeze/lag while reading lines
                     }
-                    //Get_FileSize();
                     await Task.Run(() => Thread.Sleep(1)); // Sleep here so script will not run full cpu while idle
 
                     if (line == null) //We are no longer getting new lines so we're now waiting.
@@ -635,7 +606,6 @@ namespace Read_logs
                     var msg = MessageBox.Show("Read all new lines?", "Hey", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                     if (msg == DialogResult.OK)
                     {
-                        //MessageBox.Show("empty field", "btn_add_click", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         _GlobalVar.RequestCurrentReaderPOS = true;
                         await Blank_Log_Output_End_Line();
                     }
@@ -718,6 +688,11 @@ namespace Read_logs
         {
             txt_ReadLogs.Visible = true;
             txt_ReadLogs.BringToFront();
+        }
+        private void btn_F1_Click(object sender, EventArgs e)
+        {
+            KWrefRedesign.Show();
+            KWrefRedesign.BringToFront();
         }
         private void CloseApp(object sender, FormClosingEventArgs e)
         {
