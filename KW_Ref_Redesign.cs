@@ -1,13 +1,9 @@
 ﻿using Read_logs;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -30,7 +26,6 @@ namespace BTC
         {
             Form f = Application.OpenForms["Form1"];
             var ext_Form = ((Form1)f);
-            //this.Height = ext_Form.Height / 2;
             if (ext_Form.WindowState == FormWindowState.Maximized)
             {
                 this.Height = ext_Form.Height / 2;
@@ -41,11 +36,20 @@ namespace BTC
                 this.Height = ext_Form.Height;
                 this.Location = new Point(ext_Form.Location.X + ext_Form.Width - 20, ext_Form.Location.Y);
             }
-            Patterns_Treeview_Add();
+            XML_Patterns_Treeview();
             treeView1.ExpandAll();          
             treeView1.SelectedNode = null; //Cancel out selection that automatically gets selected by ExpandAll()
         }
-        private void Patterns_Treeview_Add()
+        private void Form_Visibility_Change(object sender, EventArgs e)
+        {
+            if (this.Visible == true)
+            {
+                XML_Patterns_Treeview();
+                treeView1.ExpandAll();
+                treeView1.SelectedNode = null; //Cancel out selection that automatically gets selected by ExpandAll()
+            }
+        }
+        private void XML_Patterns_Treeview()
         {
             try
             {
@@ -83,7 +87,7 @@ namespace BTC
             }
             catch(Exception ex)
             {
-                MessageBox.Show(ex.Message, "Patterns_Treeview_Add()", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "XML_Patterns_Treeview()", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -100,7 +104,6 @@ namespace BTC
                         try
                         {
                             var nodesList = new List<TreeNode>();
-                            //Addchildren(nodesList, treeView1.Nodes[0].Nodes[e.Node.Parent.Index]);//[treeview][child nodes index][Parent Node Index
                             Addchildren(nodesList, treeView1.Nodes[e.Node.Parent.Parent.Index].Nodes[e.Node.Parent.Index]);//[treeview][calls parent twice to go up 2 levels][child Node Index]
                             foreach (TreeNode strNode in nodesList)
                             {
@@ -126,7 +129,6 @@ namespace BTC
                         }
                     }
                 }
-                //treeView1.SelectedNode = null; //Cancel out selection so we can re-select the same node
             }
             _GlobalVar.NodeClicked = false;
         }
@@ -146,7 +148,6 @@ namespace BTC
                     if (nodes.Text != "(Select All)")
                     {
                         Nodes.Add(nodes);
-                        //Addchildren(Nodes, nodes);
                     }
                 }
             }
