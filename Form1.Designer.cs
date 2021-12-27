@@ -42,14 +42,16 @@
             this.btn_Browse = new System.Windows.Forms.Button();
             this.btn_Add = new System.Windows.Forms.Button();
             this.groupBox_infile = new System.Windows.Forms.GroupBox();
-            this.btn_F1 = new System.Windows.Forms.Button();
-            this.lbl_filesize = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.Panel_Tag = new System.Windows.Forms.Panel();
+            this.lbl_filesize = new System.Windows.Forms.Label();
             this.chk_debuglines = new System.Windows.Forms.CheckBox();
+            this.btn_F1 = new System.Windows.Forms.Button();
+            this.Panel_Tag = new System.Windows.Forms.Panel();
             this.Panel_Main.SuspendLayout();
             this.Panel_ReadLogs.SuspendLayout();
             this.groupBox_infile.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.Panel_Tag.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -98,9 +100,9 @@
             // vScrollBar1
             // 
             this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar1.Location = new System.Drawing.Point(831, 0);
+            this.vScrollBar1.Location = new System.Drawing.Point(833, 0);
             this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 30);
+            this.vScrollBar1.Size = new System.Drawing.Size(17, 32);
             this.vScrollBar1.TabIndex = 2;
             this.vScrollBar1.Visible = false;
             // 
@@ -110,7 +112,7 @@
             this.Panel_Main.Dock = System.Windows.Forms.DockStyle.Left;
             this.Panel_Main.Location = new System.Drawing.Point(0, 0);
             this.Panel_Main.Name = "Panel_Main";
-            this.Panel_Main.Size = new System.Drawing.Size(50, 30);
+            this.Panel_Main.Size = new System.Drawing.Size(50, 32);
             this.Panel_Main.TabIndex = 1;
             // 
             // tag_readlog
@@ -122,7 +124,7 @@
             this.tag_readlog.ForeColor = System.Drawing.Color.DarkBlue;
             this.tag_readlog.Location = new System.Drawing.Point(0, 0);
             this.tag_readlog.Name = "tag_readlog";
-            this.tag_readlog.Size = new System.Drawing.Size(50, 30);
+            this.tag_readlog.Size = new System.Drawing.Size(50, 32);
             this.tag_readlog.TabIndex = 19;
             this.tag_readlog.Text = "Main";
             this.tag_readlog.UseVisualStyleBackColor = false;
@@ -132,7 +134,7 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(293, 15);
+            this.label1.Location = new System.Drawing.Point(3, 5);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(40, 13);
             this.label1.TabIndex = 7;
@@ -142,7 +144,7 @@
             // 
             this.lbl_StreamReader.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_StreamReader.AutoSize = true;
-            this.lbl_StreamReader.Location = new System.Drawing.Point(339, 15);
+            this.lbl_StreamReader.Location = new System.Drawing.Point(49, 5);
             this.lbl_StreamReader.Name = "lbl_StreamReader";
             this.lbl_StreamReader.Size = new System.Drawing.Size(38, 13);
             this.lbl_StreamReader.TabIndex = 8;
@@ -161,7 +163,7 @@
             // 
             // txt_ReadLogs
             // 
-            this.txt_ReadLogs.BackColor = System.Drawing.Color.Black;
+            this.txt_ReadLogs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.txt_ReadLogs.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txt_ReadLogs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txt_ReadLogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -199,24 +201,21 @@
             this.btn_Add.ForeColor = System.Drawing.Color.DarkBlue;
             this.btn_Add.Location = new System.Drawing.Point(255, 15);
             this.btn_Add.Name = "btn_Add";
-            this.btn_Add.Size = new System.Drawing.Size(32, 26);
+            this.btn_Add.Size = new System.Drawing.Size(53, 26);
             this.btn_Add.TabIndex = 19;
-            this.btn_Add.Text = "+";
+            this.btn_Add.Text = "+ (EOF)";
             this.btn_Add.UseVisualStyleBackColor = false;
             this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
             // 
             // groupBox_infile
             // 
-            this.groupBox_infile.BackColor = System.Drawing.Color.Black;
+            this.groupBox_infile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.groupBox_infile.Controls.Add(this.panel1);
             this.groupBox_infile.Controls.Add(this.chk_debuglines);
             this.groupBox_infile.Controls.Add(this.btn_F1);
-            this.groupBox_infile.Controls.Add(this.lbl_filesize);
-            this.groupBox_infile.Controls.Add(this.label2);
-            this.groupBox_infile.Controls.Add(this.label1);
             this.groupBox_infile.Controls.Add(this.btn_OpenFile);
             this.groupBox_infile.Controls.Add(this.btn_Browse);
             this.groupBox_infile.Controls.Add(this.btn_Add);
-            this.groupBox_infile.Controls.Add(this.lbl_StreamReader);
             this.groupBox_infile.Controls.Add(this.btn_Start);
             this.groupBox_infile.Controls.Add(this.txt_search);
             this.groupBox_infile.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -229,52 +228,36 @@
             this.groupBox_infile.TabStop = false;
             this.groupBox_infile.Text = "FileStream";
             // 
-            // btn_F1
+            // panel1
             // 
-            this.btn_F1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_F1.BackColor = System.Drawing.Color.AliceBlue;
-            this.btn_F1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_F1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btn_F1.ForeColor = System.Drawing.Color.DarkBlue;
-            this.btn_F1.Location = new System.Drawing.Point(822, 15);
-            this.btn_F1.Name = "btn_F1";
-            this.btn_F1.Size = new System.Drawing.Size(40, 26);
-            this.btn_F1.TabIndex = 22;
-            this.btn_F1.Text = "F1";
-            this.btn_F1.UseVisualStyleBackColor = false;
-            this.btn_F1.Click += new System.EventHandler(this.btn_F1_Click);
-            // 
-            // lbl_filesize
-            // 
-            this.lbl_filesize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lbl_filesize.AutoSize = true;
-            this.lbl_filesize.Location = new System.Drawing.Point(435, 15);
-            this.lbl_filesize.Name = "lbl_filesize";
-            this.lbl_filesize.Size = new System.Drawing.Size(13, 13);
-            this.lbl_filesize.TabIndex = 21;
-            this.lbl_filesize.Text = "0";
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.lbl_StreamReader);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.lbl_filesize);
+            this.panel1.Location = new System.Drawing.Point(314, 15);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(240, 26);
+            this.panel1.TabIndex = 24;
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(383, 15);
+            this.label2.Location = new System.Drawing.Point(130, 5);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 20;
             this.label2.Text = "FileSize:";
             // 
-            // Panel_Tag
+            // lbl_filesize
             // 
-            this.Panel_Tag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Panel_Tag.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Panel_Tag.Controls.Add(this.vScrollBar1);
-            this.Panel_Tag.Controls.Add(this.Panel_Main);
-            this.Panel_Tag.Location = new System.Drawing.Point(12, 12);
-            this.Panel_Tag.Name = "Panel_Tag";
-            this.Panel_Tag.Size = new System.Drawing.Size(852, 34);
-            this.Panel_Tag.TabIndex = 6;
+            this.lbl_filesize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbl_filesize.AutoSize = true;
+            this.lbl_filesize.Location = new System.Drawing.Point(173, 5);
+            this.lbl_filesize.Name = "lbl_filesize";
+            this.lbl_filesize.Size = new System.Drawing.Size(13, 13);
+            this.lbl_filesize.TabIndex = 21;
+            this.lbl_filesize.Text = "0";
             // 
             // chk_debuglines
             // 
@@ -285,19 +268,47 @@
             this.chk_debuglines.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_debuglines.Enabled = false;
             this.chk_debuglines.ForeColor = System.Drawing.Color.DarkBlue;
-            this.chk_debuglines.Location = new System.Drawing.Point(730, 20);
+            this.chk_debuglines.Location = new System.Drawing.Point(777, 22);
             this.chk_debuglines.Name = "chk_debuglines";
             this.chk_debuglines.Size = new System.Drawing.Size(86, 17);
             this.chk_debuglines.TabIndex = 23;
             this.chk_debuglines.Text = "Debug Lines";
             this.chk_debuglines.UseVisualStyleBackColor = false;
             // 
+            // btn_F1
+            // 
+            this.btn_F1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btn_F1.BackColor = System.Drawing.Color.AliceBlue;
+            this.btn_F1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_F1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btn_F1.ForeColor = System.Drawing.Color.DarkBlue;
+            this.btn_F1.Location = new System.Drawing.Point(560, 13);
+            this.btn_F1.Name = "btn_F1";
+            this.btn_F1.Size = new System.Drawing.Size(65, 26);
+            this.btn_F1.TabIndex = 22;
+            this.btn_F1.Text = "XML (F1)";
+            this.btn_F1.UseVisualStyleBackColor = false;
+            this.btn_F1.Click += new System.EventHandler(this.btn_F1_Click);
+            // 
+            // Panel_Tag
+            // 
+            this.Panel_Tag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Panel_Tag.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
+            this.Panel_Tag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Panel_Tag.Controls.Add(this.vScrollBar1);
+            this.Panel_Tag.Controls.Add(this.Panel_Main);
+            this.Panel_Tag.Location = new System.Drawing.Point(12, 12);
+            this.Panel_Tag.Name = "Panel_Tag";
+            this.Panel_Tag.Size = new System.Drawing.Size(852, 34);
+            this.Panel_Tag.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AcceptButton = this.btn_Add;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
             this.ClientSize = new System.Drawing.Size(876, 503);
             this.Controls.Add(this.groupBox_infile);
             this.Controls.Add(this.Panel_ReadLogs);
@@ -313,6 +324,8 @@
             this.Panel_ReadLogs.ResumeLayout(false);
             this.groupBox_infile.ResumeLayout(false);
             this.groupBox_infile.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.Panel_Tag.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -337,6 +350,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btn_F1;
         private System.Windows.Forms.CheckBox chk_debuglines;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

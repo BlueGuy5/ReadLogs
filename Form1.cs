@@ -146,7 +146,7 @@ namespace Read_logs
             _GlobalVar.txt_multilogs.Location = txt_ReadLogs.Location;
             _GlobalVar.txt_multilogs.ScrollBars = RichTextBoxScrollBars.Vertical;
             _GlobalVar.txt_multilogs.ReadOnly = true;
-            _GlobalVar.txt_multilogs.BackColor = Color.Black;
+            _GlobalVar.txt_multilogs.BackColor = Color.FromArgb(37,37,37);
             _GlobalVar.txt_multilogs.ForeColor = Color.GhostWhite;
             _GlobalVar.txt_multilogs.HideSelection = false;
             _GlobalVar.txt_multilogs.BorderStyle = BorderStyle.None;
